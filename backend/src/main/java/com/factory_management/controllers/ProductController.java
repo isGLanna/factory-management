@@ -1,16 +1,18 @@
 package com.factory_management.controllers;
 
-import com.factory_management.dto.ChangeProduct;
-import com.factory_management.dto.CreateProductRequest;
+import com.factory_management.dto.request.ChangeProductRequest;
+import com.factory_management.dto.request.CreateProductRequest;
+import com.factory_management.dto.response.ProductResponse;
 import com.factory_management.entities.Product;
 import com.factory_management.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/product")
 public class ProductController {
@@ -21,19 +23,30 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity create(@RequestBody @Valid CreateProductRequest req) {
-    return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(service.create(req));
+  public ResponseEntity<Void> create(@RequestBody @Valid CreateProductRequest req) {
+    service.create(req);
+
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PatchMapping("/sell")
-  public Product sellProduct(@RequestBody @Valid ChangeProduct req) {
-    return service.sellProduct(req);
+  public ResponseEntity<Void> sell(@RequestBody @Valid ChangeProductRequest req) {
+    service.sellProduct(req);
+
+    return ResponseEntity.noContent().build();
   }
 
   @PatchMapping("/add")
-  public Product produceProduct(@RequestBody @Valid ChangeProduct req) {
-    return service.addQuantity(req);
+  public ResponseEntity<Void> produce(@RequestBody @Valid ChangeProductRequest req) {
+    service.addQuantity(req);
+
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping
+  public ResponseEntity getAll() {
+    List<ProductResponse> products = service.getAll();
+
+    return ResponseEntity.ok(products);
   }
 }
