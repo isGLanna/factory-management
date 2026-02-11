@@ -7,12 +7,20 @@ import jakarta.validation.constraints.Digits;
 
 public class ChangeProduct {
   @NotBlank
-  public String name;
+  private String name;
 
   @NotNull
   @Positive
-  public Integer quantity;
+  private Integer quantity;
 
   @Digits(integer = 10, fraction = 2)
-  public float price;
+  private float price;
+
+  public String getName() {
+    return name;
+  }
+
+  public Integer getQuantity() {
+    return quantity;
+  }
 }

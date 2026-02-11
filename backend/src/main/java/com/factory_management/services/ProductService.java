@@ -1,10 +1,11 @@
 package com.factory_management.services;
 
-import com.factory_management.dto.CreateRawMaterialRequest;
-import com.factory_management.dto.UpdateRawMaterialRequest;
+import com.factory_management.dto.ChangeProduct;
+import com.factory_management.dto.CreateProductRequest;
+import com.factory_management.entities.Product;
 import com.factory_management.entities.RawMaterial;
-import com.factory_management.repository.RawMaterialRepository;
 
+import com.factory_management.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,31 +14,31 @@ import java.util.List;
 
 @Service
 public class ProductService {
-  private final RawMaterialRepository repository;
+  private final ProductRepository repository;
 
-  public ProductService(RawMaterialRepository repository) {
+  public ProductService(ProductRepository repository) {
     this.repository = repository;
   }
 
-  public RawMaterial create(CreateRawMaterialRequest req) {
+  public Product create(CreateProductRequest req) {
     if (repository.existsByName(req.getName())) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Raw material already exists.");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
     }
 
-    RawMaterial material = new RawMaterial(req.getName(), req.getQuantity());
-    return repository.save(material);
+    Product product = new Product(req.getName(), req.getQuantity(), req.getPrice());
+    return repository.save(product);
   }
 
-  public RawMaterial addQuantity(UpdateRawMaterialRequest req) {
-    RawMaterial material = repository.findByName(req.getName())
-            .orElseThrow(() -> new RuntimeException("Raw material not found."));
+  public Product addQuantity(ChangeProduct req) {
+    Product product = repository.findByName(req.getName())
+            .orElseThrow(() -> new RuntimeException("Product not found."));
 
-    material.setStock(material.getStock() + req.getQuantity());
+    product.setStock(product.getStock() + req.getQuantity());
 
-    return repository.save(material);
+    return repository.save(product);
   }
 
-  public List<RawMaterial> query() {
+  public List<Product> query() {
     return repository.findAll();
   }
 }
