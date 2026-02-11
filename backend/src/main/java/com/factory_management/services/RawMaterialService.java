@@ -24,15 +24,15 @@ public class RawMaterialService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Raw material already exists.");
     }
 
-    RawMaterial material = new RawMaterial(req.getName(), req.getQuantity());
+    RawMaterial material = new RawMaterial(req.getName(), req.getAmount());
     return repository.save(material);
   }
 
   public RawMaterial updateQuantity(UpdateRawMaterialRequest req) {
     RawMaterial material = repository.findByName(req.getName())
       .orElseThrow(() -> new RuntimeException("Raw material not found."));
-    if (material.getStock() + req.getQuantity() >= 0) {
-      material.setStock(material.getStock() + req.getQuantity());
+    if (material.getStock() + req.getAmount() >= 0) {
+      material.setStock(material.getStock() + req.getAmount());
     } else {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "There is not enough materail;");
     }

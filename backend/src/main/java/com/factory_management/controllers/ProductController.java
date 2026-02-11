@@ -21,13 +21,13 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity create(@RequestBody CreateProductRequest req) {
+  public ResponseEntity create(@RequestBody @Valid CreateProductRequest req) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(service.create(req));
   }
 
-  @PatchMapping("/add")
+  @PatchMapping("/sell")
   public Product sellProduct(@RequestBody @Valid ChangeProduct req) {
     return service.sellProduct(req);
   }

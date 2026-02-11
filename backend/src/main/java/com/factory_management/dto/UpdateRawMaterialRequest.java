@@ -10,13 +10,13 @@ public class UpdateRawMaterialRequest {
   private String name;
 
   @NotNull
-  private Integer quantity;
+  private Integer amount;
 
   public String getName(){
     return name;
   }
 
-  public Integer getQuantity(){
-    return quantity;
+  public Integer getAmount(){
+    return amount;
   }
 }

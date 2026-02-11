@@ -11,7 +11,7 @@ public class ChangeProduct {
 
   @NotNull
   @Positive
-  private Integer quantity;
+  private Integer amount;
 
   @Digits(integer = 10, fraction = 2)
   private float price;
@@ -20,7 +20,7 @@ public class ChangeProduct {
     return name;
   }
 
-  public Integer getQuantity() {
-    return quantity;
+  public Integer getAmount() {
+    return amount;
   }
 }

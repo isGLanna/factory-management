@@ -1,9 +1,9 @@
 package com.factory_management.dto;
 
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 public class CreateProductRequest {
   @NotBlank
@@ -11,22 +11,30 @@ public class CreateProductRequest {
 
   @NotNull
   @Positive
-  private Integer quantity;
+  private Integer amount;
 
   @NotNull
   @Positive
   @Digits(integer = 10, fraction = 2)
   private float price;
 
+  @NotEmpty
+  @Valid
+  private List<ProductMaterialRequest> materials;
+
   public String getName() {
     return name;
   }
 
-  public Integer getQuantity(){
-    return quantity;
+  public Integer getAmount(){
+    return amount;
   }
 
   public float getPrice(){
     return price;
+  }
+
+  public List<ProductMaterialRequest> getMaterials(){
+    return materials;
   }
 }
