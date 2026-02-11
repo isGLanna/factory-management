@@ -17,12 +17,12 @@ CREATE product_requirements (
   raw_material_id INT NOT NULL
   CONSTRAINT fk_raw_material
     FOREIGN KEY (raw_material_id)
-    REFERENCES raw_material(id),
+    REFERENCES raw_material(id)
     ON DELETE CASCADE
 
   CONSTRAINT fk_product
     FOREIGN KEY (product_id)
-    REFERENCES product(id),
+    REFERENCES product(id)
     ON DELETE CASCADE
 
 

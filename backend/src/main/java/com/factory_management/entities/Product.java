@@ -23,5 +23,12 @@ public class Product {
   @Column(nullable = false)
   private Integer stock;
 
+  @Column(nullable = false)
+  private float price;
 
+  public Product(String name, int stock, float price) {
+    this.name = name;
+    this.stock = stock;
+    this.price = price;
+  }
 }
