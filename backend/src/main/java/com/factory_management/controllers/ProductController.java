@@ -1,5 +1,6 @@
 package com.factory_management.controllers;
 
+import com.factory_management.dto.request.ChangeProducConfigRequest;
 import com.factory_management.dto.request.ChangeProductRequest;
 import com.factory_management.dto.request.CreateProductRequest;
 import com.factory_management.dto.response.ProductResponse;
@@ -38,7 +39,14 @@ public class ProductController {
 
   @PatchMapping("/add")
   public ResponseEntity<Void> produce(@RequestBody @Valid ChangeProductRequest req) {
-    service.addQuantity(req);
+    service.produceProduct(req);
+
+    return ResponseEntity.noContent().build();
+  }
+
+  @PatchMapping("/relationship")
+  public ResponseEntity<Void> updateRequirement(@RequestBody @Valid ChangeProducConfigRequest req) {
+    service.updateConfig(req);
 
     return ResponseEntity.noContent().build();
   }

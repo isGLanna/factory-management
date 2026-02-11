@@ -1,5 +1,6 @@
 package com.factory_management.services;
 
+import com.factory_management.dto.request.ChangeProducConfigRequest;
 import com.factory_management.dto.request.ChangeProductRequest;
 import com.factory_management.dto.request.CreateProductRequest;
 import com.factory_management.dto.request.ProductMaterialRequest;
@@ -49,6 +50,22 @@ public class ProductService {
     }
   }
 
+  public void updateConfig(ChangeProducConfigRequest req) {
+    Product product = productRepository.findByName(req.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+
+    requirementRepository.deleteRelationship(product.getId());
+
+    for (ProductMaterialRequest requirement : req.getMaterials()) {
+      RawMaterial material = rawMaterialRepository.findByName(requirement.getName())
+              .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Material not found for relationship."));
+
+      ProductRequirement productRequirement = new ProductRequirement(null, requirement.getAmount(), product, material);
+
+      requirementRepository.save(productRequirement);
+    }
+  }
+
   public void sellProduct(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
@@ -61,7 +78,7 @@ public class ProductService {
     }
   }
 
-  public void addQuantity(ChangeProductRequest req) {
+  public void produceProduct(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
 
