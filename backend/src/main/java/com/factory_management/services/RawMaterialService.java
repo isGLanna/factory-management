@@ -1,7 +1,7 @@
 package com.factory_management.services;
 
-import com.factory_management.dto.CreateRawMaterialRequest;
-import com.factory_management.dto.UpdateRawMaterialRequest;
+import com.factory_management.dto.request.CreateRawMaterialRequest;
+import com.factory_management.dto.request.UpdateRawMaterialRequest;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.repository.RawMaterialRepository;
 

@@ -1,8 +1,9 @@
 package com.factory_management.services;
 
-import com.factory_management.dto.ChangeProduct;
-import com.factory_management.dto.CreateProductRequest;
-import com.factory_management.dto.ProductMaterialRequest;
+import com.factory_management.dto.request.ChangeProductRequest;
+import com.factory_management.dto.request.CreateProductRequest;
+import com.factory_management.dto.request.ProductMaterialRequest;
+import com.factory_management.dto.response.ProductResponse;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +30,7 @@ public class ProductService {
     this.rawMaterialRepository = rawMaterialRepository;
   }
 
-  public Product create(CreateProductRequest req) {
+  public void create(CreateProductRequest req) {
     if (productRepository.existsByName(req.getName())) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
     }
@@ -45,23 +47,21 @@ public class ProductService {
 
       requirementRepository.save(productRequirement);
     }
-
-    return product;
   }
 
-  public Product sellProduct(ChangeProduct req) {
+  public void sellProduct(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
     if (product.getStock() - req.getAmount() >= 0) {
       product.setStock(product.getStock() - req.getAmount());
-      return productRepository.save(product);
+      productRepository.save(product);
     } else {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient product to sell");
     }
   }
 
-  public Product addQuantity(ChangeProduct req) {
+  public void addQuantity(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
 
@@ -90,13 +90,18 @@ public class ProductService {
 
     product.setStock(product.getStock() + req.getAmount());
     productRepository.save(product);
-
-
-    return product;
   }
 
-  public List<Product> query() {
-    return productRepository.findAll();
+  public List<ProductResponse> getAll() {
+    List<Product> products = productRepository.findAll();
+
+    List<ProductResponse> res = new ArrayList<>();
+
+    for(Product product : products) {
+      res.add(new ProductResponse(product.getName(), product.getStock(), product.getPrice()));
+    }
+
+    return res;
   }
 }
 
