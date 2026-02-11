@@ -1,5 +1,6 @@
 package com.factory_management.controllers;
 
+import com.factory_management.dto.response.RawMaterialResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,18 +25,17 @@ public class RawMaterialsController {
 
   @PostMapping
   public ResponseEntity<RawMaterial> create(@RequestBody @Valid CreateRawMaterialRequest req) {
-    return ResponseEntity
-      .status(HttpStatus.CREATED)
-      .body(service.create(req));
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PatchMapping()
-  public RawMaterial addQuantity(@RequestBody @Valid UpdateRawMaterialRequest req) {
-    return service.updateQuantity(req);
+  public ResponseEntity addQuantity(@RequestBody @Valid UpdateRawMaterialRequest req) {
+    service.updateQuantity(req);
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/query")
-  public List<RawMaterial> query() {
-    return service.query();
+  @GetMapping
+  public ResponseEntity getAll() {
+    return ResponseEntity.ok(service.getAll());
   }
 }

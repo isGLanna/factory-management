@@ -2,6 +2,7 @@ package com.factory_management.services;
 
 import com.factory_management.dto.request.CreateRawMaterialRequest;
 import com.factory_management.dto.request.UpdateRawMaterialRequest;
+import com.factory_management.dto.response.RawMaterialResponse;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.repository.RawMaterialRepository;
 
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,13 +21,14 @@ public class RawMaterialService {
     this.repository = repository;
   }
 
-  public RawMaterial create(CreateRawMaterialRequest req) {
+  public void create(CreateRawMaterialRequest req) {
     if (repository.existsByName(req.getName())) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Raw material already exists.");
     }
 
     RawMaterial material = new RawMaterial(req.getName(), req.getAmount());
-    return repository.save(material);
+
+    repository.save(material);
   }
 
   public RawMaterial updateQuantity(UpdateRawMaterialRequest req) {
@@ -40,7 +43,14 @@ public class RawMaterialService {
     return repository.save(material);
   }
 
-  public List<RawMaterial> query() {
-    return repository.findAll();
+  public List<RawMaterialResponse> getAll() {
+    List<RawMaterial> materials = repository.findAll();
+    List<RawMaterialResponse> res = new ArrayList<>();
+
+    for(RawMaterial material : materials) {
+      res.add(new RawMaterialResponse(material.getName(), material.getStock()));
+    }
+
+    return res;
   }
 }
