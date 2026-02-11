@@ -29,9 +29,9 @@ public class RawMaterialsController {
       .body(service.create(req));
   }
 
-  @PutMapping("/add")
+  @PatchMapping()
   public RawMaterial addQuantity(@RequestBody @Valid UpdateRawMaterialRequest req) {
-    return service.addQuantity(req);
+    return service.updateQuantity(req);
   }
 
   @GetMapping("/query")

@@ -10,7 +10,6 @@ public class UpdateRawMaterialRequest {
   private String name;
 
   @NotNull
-  @Positive
   private Integer quantity;
 
   public String getName(){
