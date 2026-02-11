@@ -28,11 +28,14 @@ public class RawMaterialService {
     return repository.save(material);
   }
 
-  public RawMaterial addQuantity(UpdateRawMaterialRequest req) {
+  public RawMaterial updateQuantity(UpdateRawMaterialRequest req) {
     RawMaterial material = repository.findByName(req.getName())
       .orElseThrow(() -> new RuntimeException("Raw material not found."));
-
-    material.setStock(material.getStock() + req.getQuantity());
+    if (material.getStock() + req.getQuantity() >= 0) {
+      material.setStock(material.getStock() + req.getQuantity());
+    } else {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "There is not enough materail;");
+    }
 
     return repository.save(material);
   }
