@@ -2,6 +2,7 @@ package com.factory_management.services;
 
 import com.factory_management.dto.ChangeProduct;
 import com.factory_management.dto.CreateProductRequest;
+import com.factory_management.dto.ProductMaterialRequest;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 
@@ -32,16 +33,28 @@ public class ProductService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
     }
 
-    Product product = new Product(req.getName(), req.getQuantity(), req.getPrice());
-    return productRepository.save(product);
+    Product product = new Product(req.getName(), req.getAmount(), req.getPrice());
+
+    product = productRepository.save(product);
+
+    for (ProductMaterialRequest requirement : req.getMaterials()) {
+      RawMaterial material = rawMaterialRepository.findByName(requirement.getName())
+              .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Materail not found"));
+
+      ProductRequirement productRequirement = new ProductRequirement(null, requirement.getAmount(), product, material);
+
+      requirementRepository.save(productRequirement);
+    }
+
+    return product;
   }
 
   public Product sellProduct(ChangeProduct req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
-    if (product.getStock() - req.getQuantity() >= 0) {
-      product.setStock(product.getStock() - req.getQuantity());
+    if (product.getStock() - req.getAmount() >= 0) {
+      product.setStock(product.getStock() - req.getAmount());
       return productRepository.save(product);
     } else {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient product to sell");
@@ -58,7 +71,7 @@ public class ProductService {
     for (ProductRequirement requirement : requirements) {
       RawMaterial material = requirement.getRawMaterial();
 
-      int requiredAmount = requirement.getQuantity() * req.getQuantity();
+      int requiredAmount = requirement.getAmount() * req.getAmount();
 
       if (requiredAmount > material.getStock()) {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient raw material to produce");
@@ -69,13 +82,13 @@ public class ProductService {
     for (ProductRequirement requirement : requirements) {
       RawMaterial material = requirement.getRawMaterial();
 
-      int requirementAmount = requirement.getQuantity() * req.getQuantity();
+      int requirementAmount = requirement.getAmount() * req.getAmount();
 
       material.setStock(material.getStock() - requirementAmount);
       rawMaterialRepository.save(material);
     }
 
-    product.setStock(product.getStock() + req.getQuantity());
+    product.setStock(product.getStock() + req.getAmount());
     productRepository.save(product);
 
 

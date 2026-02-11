@@ -20,7 +20,7 @@ public class ProductRequirement {
   private Long id;
 
   @Column(nullable = false)
-  private Integer quantity;
+  private Integer amount;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "product_id", nullable = false)
