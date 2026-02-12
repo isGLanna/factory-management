@@ -1,7 +1,9 @@
 package com.factory_management.repository;
 
 import com.factory_management.entities.ProductRequirement;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,8 @@ import static org.hibernate.boot.model.NamedEntityGraphDefinition.Source.JPA;
 public interface ProductRequirementsRepository extends JpaRepository<ProductRequirement, Long> {
   List<ProductRequirement> getByProductId(Long id);
 
-  @Query(value = "DELETE FROM product_requirement WHERE product_id = :productId")
-  List<ProductRequirement> deleteRelationship(@Param("prroductId") Long productId);
+  @Modifying
+  @Transactional
+  @Query(value = "DELETE FROM ProductRequirement as pr WHERE pr.product.id = :productId")
+  void deleteRelationship(@Param("productId") Long productId);
 }
