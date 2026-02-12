@@ -50,6 +50,10 @@ public class ProductService {
     }
   }
 
+  public List<ProductRequirement> queryConfig() {
+    return requirementRepository.findAll();
+  }
+
   public void updateConfig(ChangeProducConfigRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
