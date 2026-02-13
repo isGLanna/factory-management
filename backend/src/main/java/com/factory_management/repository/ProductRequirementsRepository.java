@@ -20,4 +20,6 @@ public interface ProductRequirementsRepository extends JpaRepository<ProductRequ
   @Transactional
   @Query(value = "DELETE FROM ProductRequirement as pr WHERE pr.product.id = :productId")
   void deleteRelationship(@Param("productId") Long productId);
-}
+
+  List<ProductRequirement> findByProductId(Long productId);
+  }

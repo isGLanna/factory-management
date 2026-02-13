@@ -1,6 +1,5 @@
 package com.factory_management.controllers;
 
-import com.factory_management.dto.response.RawMaterialResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,6 @@ import com.factory_management.dto.request.CreateRawMaterialRequest;
 import com.factory_management.dto.request.UpdateRawMaterialRequest;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.services.RawMaterialService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/raw-material")

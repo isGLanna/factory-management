@@ -4,7 +4,6 @@ import com.factory_management.dto.request.ChangeProducConfigRequest;
 import com.factory_management.dto.request.ChangeProductRequest;
 import com.factory_management.dto.request.CreateProductRequest;
 import com.factory_management.dto.response.ProductResponse;
-import com.factory_management.entities.Product;
 import com.factory_management.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
