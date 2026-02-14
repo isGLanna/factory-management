@@ -31,7 +31,7 @@ public class RawMaterialService {
     repository.save(material);
   }
 
-  public RawMaterial updateQuantity(UpdateRawMaterialRequest req) {
+  public RawMaterial replacement(UpdateRawMaterialRequest req) {
     RawMaterial material = repository.findByName(req.getName())
       .orElseThrow(() -> new RuntimeException("Raw material not found."));
     if (material.getStock() + req.getAmount() >= 0) {

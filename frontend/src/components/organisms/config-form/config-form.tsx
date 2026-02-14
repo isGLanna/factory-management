@@ -5,11 +5,12 @@ import "./config-form.scss"
 
 interface Props {
   product: string
+  children: React.ReactNode
   onClose: () => void
   onSave: (data: ChangeProductConfigRequest) => void
 }
 
-export function ConfigForm({ product, onClose, onSave }: Props) {
+export function ConfigForm({ product, children, onClose, onSave }: Props) {
   const [config, setConfig] = useState<ChangeProductConfigRequest>({
     name: product,
     materials: []
@@ -24,11 +25,7 @@ export function ConfigForm({ product, onClose, onSave }: Props) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h3>Configurar Produto</h3>
-
-        <div>
-          <p>Materiais para fabricação de <strong>{config.name}</strong></p>
-        </div>
+        {children}
 
         <div>
           <label>Materiais ({config.materials.length})</label>
@@ -55,7 +52,7 @@ export function ConfigForm({ product, onClose, onSave }: Props) {
         </div>
 
         <button className="btn-add" onClick={() => setConfig({ ...config, materials: [...config.materials, { name: "", amount: 1 }] })}>
-          + Adicionar Material
+          Adicionar Material
         </button>
 
         <div className="actions">

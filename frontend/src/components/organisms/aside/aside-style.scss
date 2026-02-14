@@ -1,6 +1,10 @@
 .aside-content {
   display: inline-flex;
   height: fit-content;
+  background: var(--container);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 
   button{
     display: flex;
@@ -9,11 +13,18 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    color: var(--font);
     gap: 5px;
     border: 1px solid var(--font-grey);
     border-radius: var(--border-radius);
+    transition: 200ms ease;
+
+    &.active{
+      box-shadow: var(--box-shadow);
+      transition: 200ms ease;
+    }
     
-    label{
+    &{
       font-size: 16px;
     }
   }

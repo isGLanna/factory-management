@@ -13,3 +13,10 @@ export interface ChangeProductConfigRequest {
   name: string;
   materials: ProductMaterialRequest[];
 }
+
+export interface CreateProductRequest {
+  name: string;
+  stock: number;
+  price: number;
+  materials: ProductMaterialRequest[];
+}

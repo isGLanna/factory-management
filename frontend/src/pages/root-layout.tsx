@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Aside } from '../components/templates/aside/aside'
+import { Aside } from '../components/organisms/aside/aside'
 
 interface Props {
   children: ReactNode

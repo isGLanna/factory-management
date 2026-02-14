@@ -1,27 +1,24 @@
-import { GoPencil } from "react-icons/go";
-import { useState } from "react";
-import './card-style.scss';
-import type { Product } from "../../../types/product";
+import { GoPencil } from "react-icons/go"
+import './card-style.scss'
 
-interface RawMaterial { name: string; amount: number; }
-
-interface CardProps {
-  product: Product
-  onEdit: (product: Product) => void
+interface CardProps<T> {
+  item: T
+  title: string
+  children?: React.ReactNode
+  onEdit: (item: T) => void
 }
 
-export function Card({ product, onEdit}: CardProps) {
+export function Card<T>({ item, title, children, onEdit}: CardProps<T>) {
 
   return (
     <div className={`card-container flex flex-col`}>
       <div className="card-header">
-        <h3>{product.name}</h3>
-        <button onClick={() => onEdit(product)}><GoPencil /></button>
+        <h3>{title}</h3>
+        <button onClick={() => onEdit(item)}><GoPencil /></button>
       </div>
 
       <div className="card-info">
-        <p><strong>Estoque:</strong> {product.stock}</p>
-        <p><strong>Preço:</strong> R$ {product.price}</p>
+        {children}
       </div>
 
     </div>
