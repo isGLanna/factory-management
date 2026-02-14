@@ -1,13 +1,9 @@
 .product-content {
   background: var(--container);
   color: var(--font-dark);
-  height: 80dvh;
+  height: 35rem;
   width: 100%;
   padding: 20px;
   border-radius: var(--border-radius);
-
-  .btn-add {
-    background: #4272f7;
-    color: white;
-  }
+  box-shadow: var(--box-shadow);
 }

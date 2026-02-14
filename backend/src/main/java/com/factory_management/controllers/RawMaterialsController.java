@@ -22,12 +22,13 @@ public class RawMaterialsController {
 
   @PostMapping
   public ResponseEntity<RawMaterial> create(@RequestBody @Valid CreateRawMaterialRequest req) {
+    service.create(req);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PatchMapping()
-  public ResponseEntity addQuantity(@RequestBody @Valid UpdateRawMaterialRequest req) {
-    service.updateQuantity(req);
+  public ResponseEntity replacement(@RequestBody @Valid UpdateRawMaterialRequest req) {
+    service.replacement(req);
     return ResponseEntity.noContent().build();
   }
 

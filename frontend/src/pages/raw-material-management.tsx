@@ -1,9 +1,9 @@
-import { ProductContent } from "../components/templates/product-content/product-content"
+import { RawMaterialContent } from "../components/templates/raw-material-management/raw-material-content"
 
 export function RawMaterialManagement() {
   return (
     <div className='w-full'>
-      <ProductContent />
+      <RawMaterialContent />
     </div>
   )
 }
