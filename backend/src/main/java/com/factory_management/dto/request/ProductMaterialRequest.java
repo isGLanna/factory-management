@@ -17,5 +17,4 @@ public class ProductMaterialRequest {
   }
 
   public Integer getAmount() {  return amount;  }
-
 }
