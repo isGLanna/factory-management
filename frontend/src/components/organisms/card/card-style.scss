@@ -1,0 +1,78 @@
+.card-container {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  min-width: 12rem;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--font-grey, #c9c9b2);
+  border-radius: 8px;
+  background: #fff;
+  transition: 0.2s ease-in-out;
+
+  &.active {
+    border-color: #007bff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 { margin: 0; font-size: 1.1rem; }
+    button { all: unset; cursor: pointer; }
+  }
+
+  .materials-list {
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+    font-size: 0.9rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed #eee;
+
+      button { all: unset; color: red; cursor: pointer; }
+    }
+  }
+
+  .add-material-form,
+  .inputs-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  input,
+  button {
+    width: 100%;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    outline: none;
+  }
+
+  .add-btn {
+    background: #fff;
+    color: #28a745;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .save-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+
+    &:hover { background: #0056b3; }
+  }
+}
