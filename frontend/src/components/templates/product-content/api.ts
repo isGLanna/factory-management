@@ -22,13 +22,9 @@ export const createProduct = async (productData: any) => {
   }
 }
 
-export const updateProduct = async (name: string, configData: ChangeProductConfigRequest) => {
+export const updateProduct = async (configData: ChangeProductConfigRequest) => {
   try {
-    const payload = {
-      ...configData,
-      name: name
-    }
-    const response = await axios.put(`${url}/relationship`, payload)
+    const response = await axios.patch(`${url}/relationship`, configData)
     return response.data
   } catch (error) {
     alert("Error updating product")

@@ -1,46 +1,27 @@
-import { GoPencil, GoPlus, GoTrash } from "react-icons/go";
-import { IoMdAddCircle } from "react-icons/io";
+import { GoPencil } from "react-icons/go";
 import { useState } from "react";
 import './card-style.scss';
+import type { Product } from "../../../types/product";
 
 interface RawMaterial { name: string; amount: number; }
 
 interface CardProps {
-  title: string;
-  stock: number;
-  price: number;
-  initialMaterials?: RawMaterial[];
-  onSave?: (data: { productName: string, materials: RawMaterial[] }) => void;
+  product: Product
+  onEdit: (product: Product) => void
 }
 
-export function Card({ title, stock, price, initialMaterials = [], onSave }: CardProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [materials, setMaterials] = useState<RawMaterial[]>(initialMaterials);
-  const [newMatName, setNewMatName] = useState("");
-  const [newMatAmount, setNewMatAmount] = useState<number | "">("");
-
-  const handleAddMaterial = () => {
-    if (!newMatName || !newMatAmount) return;
-    setMaterials([...materials, { name: newMatName, amount: Number(newMatAmount) }]);
-    setNewMatName("");
-    setNewMatAmount("");
-  };
-
-  const handleSave = () => {
-    if (onSave) onSave({ productName: title, materials });
-    setIsEditing(false);
-  };
+export function Card({ product, onEdit}: CardProps) {
 
   return (
-    <div className={`card-container flex flex-col ${isEditing ? 'active' : ''}`}>
+    <div className={`card-container flex flex-col`}>
       <div className="card-header">
-        <h3>{title}</h3>
-        <button onClick={() => setIsEditing(!isEditing)}><GoPencil /></button>
+        <h3>{product.name}</h3>
+        <button onClick={() => onEdit(product)}><GoPencil /></button>
       </div>
 
       <div className="card-info">
-        <p><strong>Estoque:</strong> {stock}</p>
-        <p><strong>Preço:</strong> R$ {price}</p>
+        <p><strong>Estoque:</strong> {product.stock}</p>
+        <p><strong>Preço:</strong> R$ {product.price}</p>
       </div>
 
     </div>

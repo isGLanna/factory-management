@@ -30,10 +30,7 @@ export function ProductContent() {
     if (!editingProduct) return
 
     try {
-      alert(data)
-      alert(data.name)
-      alert(data.materials)
-      await updateProduct(data.name, data)
+      await updateProduct(data)
       setEditingProduct(null)
       fetchProducts()
     } catch {
@@ -45,10 +42,9 @@ export function ProductContent() {
     products.map((product) => (
       <div 
         key={product.name}
-        onClick={() => setEditingProduct(product)} 
         className="cursor-pointer hover:opacity-80 transition-opacity"
       >
-        <Card title={product.name} stock={product.stock} price={product.price} />
+        <Card product={product} onEdit={setEditingProduct} />
       </div>
     ))
   ), [products])
