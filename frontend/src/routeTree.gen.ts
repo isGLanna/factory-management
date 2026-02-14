@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RawMaterialManagementRouteImport } from './routes/raw-material-management'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RawMaterialManagementRoute = RawMaterialManagementRouteImport.update({
+  id: '/raw-material-management',
+  path: '/raw-material-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +25,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/raw-material-management'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/raw-material-management'
+  id: '__root__' | '/' | '/raw-material-management'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RawMaterialManagementRoute: typeof RawMaterialManagementRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/raw-material-management': {
+      id: '/raw-material-management'
+      path: '/raw-material-management'
+      fullPath: '/raw-material-management'
+      preLoaderRoute: typeof RawMaterialManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RawMaterialManagementRoute: RawMaterialManagementRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

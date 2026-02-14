@@ -36,7 +36,7 @@ public class ProductController {
     return ResponseEntity.noContent().build();
   }
 
-  @PatchMapping("/add")
+  @PatchMapping("/produce")
   public ResponseEntity<Void> produce(@RequestBody @Valid ChangeProductRequest req) {
     service.produceProduct(req);
 

@@ -1,6 +1,7 @@
 :root{
-  --background: #313142;
-  --font: #e4e4f2;
+  --background: #41414e;
+  --container: #fafafa;
+  --font: #333;
 
 
   --input: #fafafa;
@@ -22,7 +23,7 @@
   --second-500-a: #768FBF80;
   --second-300-a: #C2CBDB80;
 
-  --font-dark: #364768;
+  --font-dark: #26324b;
   --font-grey: #8594B1;
   --font-light: #E1E6EF;
 }
