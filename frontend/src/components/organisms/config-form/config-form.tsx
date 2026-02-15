@@ -4,15 +4,15 @@ import { CiTrash } from "react-icons/ci";
 import "./config-form.scss"
 
 interface Props {
-  product: string
+  name?: string
   children: React.ReactNode
   onClose: () => void
   onSave: (data: ChangeProductConfigRequest) => void
 }
 
-export function ConfigForm({ product, children, onClose, onSave }: Props) {
+export function ConfigForm({ name, children, onClose, onSave }: Props) {
   const [config, setConfig] = useState<ChangeProductConfigRequest>({
-    name: product,
+    name: name || "",
     materials: []
   })
 
@@ -55,7 +55,7 @@ export function ConfigForm({ product, children, onClose, onSave }: Props) {
           Adicionar Material
         </button>
 
-        <div className="actions">
+        <div className="flex flex-row justify-end gap-2 mt-4">
           <button className="btn-cancel" onClick={onClose}>Cancelar</button>
           <button className="btn-save" onClick={() => onSave(config)}>Salvar</button>
         </div>

@@ -5,18 +5,13 @@ export interface Product {
 }
 
 export interface ProductMaterialRequest {
-  name: string;
-  amount: number;
+  name: string
+  amount: number
 }
 
 export interface ChangeProductConfigRequest {
-  name: string;
-  materials: ProductMaterialRequest[];
-}
-
-export interface CreateProductRequest {
-  name: string;
-  stock: number;
-  price: number;
+  name: string
+  stock?: number
+  price?: string
   materials: ProductMaterialRequest[];
 }

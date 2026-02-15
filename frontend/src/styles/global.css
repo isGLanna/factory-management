@@ -83,5 +83,8 @@ input {
 
 button {
   padding: 6px 12px;
-  border-radius: 5px;;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
 }
