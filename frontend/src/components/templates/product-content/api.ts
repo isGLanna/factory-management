@@ -14,11 +14,11 @@ export const getProducts = async (): Promise<Product[] | undefined> => {
   }
 }
 
-export const createProduct = async (productData: any) => {
+export const createProduct = async (productData: ChangeProductConfigRequest) => {
   try {
-    await axios.post(`${url}/products`, productData)
+    await axios.post(`${url}`, {...productData, price: parseFloat(productData.price)})
   } catch (error) {
-    alert("Error creating product")
+      alert("Error creating product")
   }
 }
 

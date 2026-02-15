@@ -22,7 +22,7 @@ export function FormCreateProduct({ product, setCreatingProduct }: Props) {
         </div>
 
         <div className="flex flex-row items-center gap-4">
-          <label htmlFor="stock">Estoque atual:</label>
+          <label htmlFor="stock">Estoque:</label>
           <input id="stock" name="estoque" type="text" 
               value={product.stock} 
               onChange={e => setCreatingProduct({ ...product, stock: Number(e.target.value) })}

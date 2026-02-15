@@ -13,6 +13,8 @@ interface Props {
 export function ConfigForm({ name, children, onClose, onSave }: Props) {
   const [config, setConfig] = useState<ChangeProductConfigRequest>({
     name: name || "",
+    stock: 0,
+    price: "",
     materials: []
   })
 
@@ -55,7 +57,7 @@ export function ConfigForm({ name, children, onClose, onSave }: Props) {
           Adicionar Material
         </button>
 
-        <div className="flex flex-row justify-end gap-2 mt-4">
+        <div className="flex flex-row justify-end gap-2">
           <button className="btn-cancel" onClick={onClose}>Cancelar</button>
           <button className="btn-save" onClick={() => onSave(config)}>Salvar</button>
         </div>
