@@ -36,7 +36,7 @@ public class ProductService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
     }
 
-    Product product = new Product(req.getName(), req.getAmount(), req.getPrice());
+    Product product = new Product(req.getName(), req.getStock(), req.getPrice());
 
     product = productRepository.save(product);
 

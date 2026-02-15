@@ -2,7 +2,7 @@ import { ProductContent } from "../components/templates/product-content/product-
 
 export function ProductsManagement() {
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <ProductContent />
     </div>
   )

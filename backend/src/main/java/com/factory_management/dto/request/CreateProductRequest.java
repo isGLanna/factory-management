@@ -11,7 +11,7 @@ public class CreateProductRequest {
 
   @NotNull
   @Positive
-  private Integer amount;
+  private Integer stock;
 
   @NotNull
   @Positive
@@ -26,8 +26,8 @@ public class CreateProductRequest {
     return name;
   }
 
-  public Integer getAmount(){
-    return amount;
+  public Integer getStock() {
+    return stock;
   }
 
   public float getPrice(){

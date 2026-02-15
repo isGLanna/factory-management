@@ -11,7 +11,7 @@ export interface ProductMaterialRequest {
 
 export interface ChangeProductConfigRequest {
   name: string
-  stock?: number
-  price?: string
+  stock: number
+  price: string
   materials: ProductMaterialRequest[];
 }

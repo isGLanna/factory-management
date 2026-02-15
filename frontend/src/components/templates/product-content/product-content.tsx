@@ -41,22 +41,23 @@ export function ProductContent() {
     }
   }, [editingProduct, fetchProducts])
 
-
   const handleCreate = useCallback(async (data: ChangeProductConfigRequest) => {
-    if (!creatingProduct && data.price === undefined) return
-      
-    const formatteddata = data.price?.replace(",", ".")
+    if (!creatingProduct || !data || !creatingProduct.price) return
+
+    const product: ChangeProductConfigRequest = {
+      name: creatingProduct.name,
+      stock: creatingProduct.stock, 
+      price: creatingProduct.price.replace(",", "."),
+      materials: data.materials}
 
     try {
-      await createProduct(formatteddata)
+      await createProduct(product)
       setCreatingProduct(null)
       fetchProducts()
     } catch (error) {
       alert("Não foi possível criar o produto")
     }
-  }, [creatingProduct])
-
-
+  }, [creatingProduct, fetchProducts])
 
   return (
     <main className="product-content">
@@ -73,7 +74,7 @@ export function ProductContent() {
       {creatingProduct && (
         <ConfigForm 
           name={creatingProduct.name}
-          onClose={() => setEditingProduct(null)}
+          onClose={() => setCreatingProduct(null)}
           onSave={handleCreate}>
           <FormCreateProduct product={creatingProduct} setCreatingProduct={setCreatingProduct} />
         </ConfigForm>
