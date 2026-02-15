@@ -2,7 +2,7 @@ interface Props {
   name: string
 }
 
-export function UpdateProduct({ name }: Props) {
+export function FormUpdateProduct({ name }: Props) {
   return (
     <>
       <h3>Configurar Produto</h3>

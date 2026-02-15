@@ -1,16 +1,17 @@
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback } from "react"
 import "./product.scss"
-import { getProducts, updateProduct } from "./api"
-import type { Product, ChangeProductConfigRequest, CreateProductRequest } from "../../../types/product"
+import { getProducts, updateProduct, createProduct } from "./api"
+import type { Product, ChangeProductConfigRequest } from "../../../types/product"
 import { ListProducts } from "./sub-template/list-products"
 import { ConfigForm } from "../../organisms/config-form/config-form"
-import { UpdateProduct } from "./sub-template/update-product"
+import { FormUpdateProduct } from "./sub-template/update-product"
+import { FormCreateProduct } from "./sub-template/create-product"
 
 export function ProductContent() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  const [creatingProduct, setCreatingProduct] = useState<CreateProductRequest | null>(null)
+  const [creatingProduct, setCreatingProduct] = useState<ChangeProductConfigRequest | null>(null)
 
   const fetchProducts = useCallback(async () => {
     setLoading(true)
@@ -18,7 +19,7 @@ export function ProductContent() {
       const data = await getProducts()
       if (data) setProducts(data)
     } catch {
-      alert("Error fetching products")
+      alert("Não foi possível consultar os produtos.")
     } finally {
       setLoading(false)
     }
@@ -36,13 +37,24 @@ export function ProductContent() {
       setEditingProduct(null)
       fetchProducts()
     } catch {
-      alert("Error updating config")
+      alert("Falha ao atualizar o produto.")
     }
   }, [editingProduct, fetchProducts])
 
-  const createProduct = useCallback(() => {
-    setCreatingProduct({ name: "", stock: 0, price: 0 , materials: []})
-  }, [])
+
+  const handleCreate = useCallback(async (data: ChangeProductConfigRequest) => {
+    if (!creatingProduct && data.price === undefined) return
+      
+    const formatteddata = data.price?.replace(",", ".")
+
+    try {
+      await createProduct(formatteddata)
+      setCreatingProduct(null)
+      fetchProducts()
+    } catch (error) {
+      alert("Não foi possível criar o produto")
+    }
+  }, [creatingProduct])
 
 
 
@@ -50,7 +62,7 @@ export function ProductContent() {
     <main className="product-content">
       <header className="flex flex-row justify-between">
         <h1>Produtos</h1>
-        <button className="btn-add" onClick={() => createProduct}>Incluir produto</button>
+        <button className="btn-add" onClick={() => setCreatingProduct({name: "", stock: 0, price: '0.0', materials: []})}>Incluir produto</button>
       </header>
       <hr className="p-2"/>
 
@@ -60,19 +72,19 @@ export function ProductContent() {
 
       {creatingProduct && (
         <ConfigForm 
-          product={creatingProduct.name}
+          name={creatingProduct.name}
           onClose={() => setEditingProduct(null)}
-          onSave={handleSave}>
-          <UpdateProduct name={creatingProduct.name} />
+          onSave={handleCreate}>
+          <FormCreateProduct product={creatingProduct} setCreatingProduct={setCreatingProduct} />
         </ConfigForm>
       )}
 
       {editingProduct && (
         <ConfigForm 
-          product={editingProduct.name}
+          name={editingProduct.name}
           onClose={() => setEditingProduct(null)}
           onSave={handleSave}>
-          <UpdateProduct name={editingProduct.name} />
+          <FormUpdateProduct name={editingProduct.name} />
         </ConfigForm>
       )}
     </main>
