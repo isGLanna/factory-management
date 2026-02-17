@@ -4,22 +4,24 @@ import type { Product } from "../../../../types/product"
 
 interface Props {
   products: Product[]
-  setIsEditing: (setIsEditing: boolean) => void
+  setProductNameEditing: (setProductNameEditing: string) => void
 }
 
-export function ListProducts({ products, setIsEditing }: Props) {
+export function ListProducts({ products, setProductNameEditing }: Props) {
+
+
   const productList = useMemo(() => (
     products.map((product) => (
       <div
         className="cursor-pointer hover:opacity-80 transition-opacity"
         key={product.name}>
-        <Card title={product.name} setIsEditing={setIsEditing}>
+        <Card title={product.name} onEdit={() => setProductNameEditing(product.name)}>
           <p><strong>Estoque: </strong>{product.stock}</p>
           <p><strong>Preço: </strong>{product.price}</p>
         </Card>
       </div>
     ))
-  ), [products])
+  ), [products, setProductNameEditing])
 
   return productList;
 };

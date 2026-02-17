@@ -1,17 +1,16 @@
 import { useState, useEffect, useCallback } from "react"
 import "./product.scss"
 import { getProducts, updateProduct, createProduct } from "./api"
-import type { Product } from "../../../types/product"
-import type { RawMaterial, MaterialToProduce } from "../../../types/raw-material"
+import type { Product, ProductMaterialRequest } from "../../../types/product"
+import type { MaterialToProduce } from "../../../types/raw-material"
 import { ListProducts } from "./sub-template/list-products"
 import { Modal } from "../../molecules/modal/modal"
-import { FormUpdateProduct } from "./sub-template/update-product"
 import { FormCreateProduct } from "./sub-template/create-product"
 
 export function ProductContent() {
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [isEditingProduct, setIsEditingProduct] = useState<boolean>(false)
+  const [productNameEditing, setProductNameEditing] = useState<string>("")
   const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
 
   const fetchProducts = useCallback(async () => {
@@ -30,7 +29,11 @@ export function ProductContent() {
     fetchProducts()
   }, [fetchProducts])
 
-  const handleUpdateProduct = useCallback(async (productComposition: Product & {materials: RawMaterial[]}) => {
+  const handleUpdateProduct = useCallback(async (rawMaterial: MaterialToProduce[]) => {
+    const productComposition: ProductMaterialRequest = {
+      name: product
+    }
+
     try {
       await updateProduct(productComposition)
       fetchProducts()
@@ -65,7 +68,7 @@ export function ProductContent() {
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {isLoading ? <p>Carregando...</p> : <ListProducts products={products} setIsEditing={setIsEditingProduct} />}
+        {isLoading ? <p>Carregando...</p> : <ListProducts products={products} setProductNameEditing={setProductNameEditing} />}
       </section>
 
       {isCreatingProduct && (
@@ -75,9 +78,9 @@ export function ProductContent() {
         </Modal>
       )}
 
-      {isEditingProduct && (
+      {productNameEditing && (
         <Modal 
-          onClose={() => setIsEditingProduct(false)}>
+          onClose={() => setProductNameEditing(false)}>
           <FormUpdateProduct products={products} onUpdate={handleUpdateProduct} />
         </Modal>
       )}

@@ -3,17 +3,17 @@ import './card-style.scss'
 
 interface CardProps{
   title: string
-  children?: React.ReactNode
-  setIsEditing: (onEdit: boolean) => void
+  children: React.ReactNode
+  onEdit: () => void
 }
 
-export function Card({ title, children, setIsEditing}: CardProps) {
+export function Card({ title, children, onEdit}: CardProps) {
 
   return (
     <div className={`card-container flex flex-col`}>
       <div className="card-header">
         <h3>{title}</h3>
-        <button onClick={() => setIsEditing(true)}><GoPencil /></button>
+        <button onClick={() => onEdit}><GoPencil /></button>
       </div>
 
       <div className="card-info">
