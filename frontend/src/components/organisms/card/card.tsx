@@ -13,10 +13,10 @@ export function Card({ title, children, onEdit}: CardProps) {
     <div className={`card-container flex flex-col`}>
       <div className="card-header">
         <h3>{title}</h3>
-        <button onClick={() => onEdit}><GoPencil /></button>
+        <button onClick={onEdit}><GoPencil /></button>
       </div>
 
-      <div className="card-info">
+      <div>
         {children}
       </div>
 

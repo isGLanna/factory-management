@@ -13,7 +13,6 @@ export function ListProducts({ products, setProductNameEditing }: Props) {
   const productList = useMemo(() => (
     products.map((product) => (
       <div
-        className="cursor-pointer hover:opacity-80 transition-opacity"
         key={product.name}>
         <Card title={product.name} onEdit={() => setProductNameEditing(product.name)}>
           <p><strong>Estoque: </strong>{product.stock}</p>

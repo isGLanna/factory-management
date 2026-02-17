@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from "react"
 import "./product.scss"
 import { getProducts, updateProduct, createProduct } from "./api"
-import type { Product, ProductMaterialRequest } from "../../../types/product"
+import type { Product } from "../../../types/product"
 import type { MaterialToProduce } from "../../../types/raw-material"
 import { ListProducts } from "./sub-template/list-products"
 import { Modal } from "../../molecules/modal/modal"
 import { FormCreateProduct } from "./sub-template/create-product"
+import { FormUpdateProduct } from './sub-template/update-product'
 
 export function ProductContent() {
   const [products, setProducts] = useState<Product[]>([])
@@ -29,9 +30,10 @@ export function ProductContent() {
     fetchProducts()
   }, [fetchProducts])
 
-  const handleUpdateProduct = useCallback(async (rawMaterial: MaterialToProduce[]) => {
-    const productComposition: ProductMaterialRequest = {
-      name: product
+  const handleUpdateProduct = useCallback(async (rawMaterials: MaterialToProduce[]) => {
+    const productComposition = {
+      name: productNameEditing,
+      materials: rawMaterials
     }
 
     try {
@@ -40,9 +42,9 @@ export function ProductContent() {
     } catch {
       alert("Falha ao atualizar o produto.")
     } finally {
-      setIsEditingProduct(false)
+      setProductNameEditing("")
     }
-  }, [isEditingProduct, fetchProducts])
+  }, [productNameEditing, fetchProducts])
 
   const handleCreateProduct = useCallback(async (productComposition: Product & {materials: MaterialToProduce[]}) => {
     if (!isCreatingProduct) return
@@ -80,8 +82,11 @@ export function ProductContent() {
 
       {productNameEditing && (
         <Modal 
-          onClose={() => setProductNameEditing(false)}>
-          <FormUpdateProduct products={products} onUpdate={handleUpdateProduct} />
+          onClose={() => setProductNameEditing("")}>
+          <FormUpdateProduct 
+            productName={productNameEditing}
+            onUpdate={handleUpdateProduct} 
+            onClose={() => setProductNameEditing("")}/>
         </Modal>
       )}
     </main>
