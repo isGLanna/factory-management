@@ -42,7 +42,7 @@ export function FormCreateProduct({ productName, onUpdate, onClose }: Props) {
                 value={m.amount} 
                 onChange={e => updateItem(i, 'amount', Number(e.target.value))} 
               />
-              <button className="btn-delete" type="button" onClick={() => setRawMaterial({ ...rawMaterial.filter((_, idx) => idx !== i) })}>
+              <button className="btn-delete" type="button" onClick={() => setRawMaterial({ ...rawMaterial.materials.filter((_, idx) => idx !== i) })}>
                 <CiTrash size={20}/>
               </button>
             </div>
@@ -50,7 +50,7 @@ export function FormCreateProduct({ productName, onUpdate, onClose }: Props) {
         </div>
       </div>
 
-      <button className="btn-add" type="button" onClick={() => setRawMaterial({...rawMaterial.materials, {name: "", amount: 0 })}>
+      <button className="btn-add" type="button" onClick={() => setRawMaterial({ materials: [...rawMaterial.materials, {name: "", amount: 0 }] })}>
           Adicionar material
       </button>
 
