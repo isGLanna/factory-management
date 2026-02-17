@@ -21,6 +21,7 @@
 
     &.active{
       box-shadow: var(--box-shadow);
+      color: #0d2ace;
       transition: 200ms ease;
     }
     
