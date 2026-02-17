@@ -1,20 +1,19 @@
 import { GoPencil } from "react-icons/go"
 import './card-style.scss'
 
-interface CardProps<T> {
-  item: T
+interface CardProps{
   title: string
   children?: React.ReactNode
-  onEdit: (item: T) => void
+  setIsEditing: (onEdit: boolean) => void
 }
 
-export function Card<T>({ item, title, children, onEdit}: CardProps<T>) {
+export function Card({ title, children, setIsEditing}: CardProps) {
 
   return (
     <div className={`card-container flex flex-col`}>
       <div className="card-header">
         <h3>{title}</h3>
-        <button onClick={() => onEdit(item)}><GoPencil /></button>
+        <button onClick={() => setIsEditing(true)}><GoPencil /></button>
       </div>
 
       <div className="card-info">
