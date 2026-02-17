@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import "./product.scss"
 import { getMaterials, requestReplacement} from "./api"
-import type { ChangeProductConfigRequest } from "../../../types/product"
 import type { RawMaterial } from '../../../types/raw-material'
 import { Card } from "../../organisms/card/card"
-import { ConfigForm } from "../../organisms/config-form/config-form"
+import { ConfigForm } from "../../molecules/modal/modal"
 
 export function RawMaterialContent() {
   const [materials, setMaterials] = useState<RawMaterial[]>([])
@@ -27,7 +26,7 @@ export function RawMaterialContent() {
     fetchProducts()
   }, [fetchProducts])
 
-  const handleSave = useCallback(async (material: RawMaterial) => {
+  const handleCreateMaterial = useCallback(async (material: RawMaterial) => {
     if (!editingMaterial) return
 
     try {

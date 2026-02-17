@@ -1,92 +1,85 @@
 import { useState, useEffect, useCallback } from "react"
 import "./product.scss"
 import { getProducts, updateProduct, createProduct } from "./api"
-import type { Product, ChangeProductConfigRequest } from "../../../types/product"
+import type { Product } from "../../../types/product"
+import type { RawMaterial, MaterialToProduce } from "../../../types/raw-material"
 import { ListProducts } from "./sub-template/list-products"
-import { ConfigForm } from "../../organisms/config-form/config-form"
+import { Modal } from "../../molecules/modal/modal"
 import { FormUpdateProduct } from "./sub-template/update-product"
 import { FormCreateProduct } from "./sub-template/create-product"
 
 export function ProductContent() {
   const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  const [creatingProduct, setCreatingProduct] = useState<ChangeProductConfigRequest | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isEditingProduct, setIsEditingProduct] = useState<boolean>(false)
+  const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
 
   const fetchProducts = useCallback(async () => {
-    setLoading(true)
+    setIsLoading(true)
     try {
-      const data = await getProducts()
-      if (data) setProducts(data)
+      const productList = await getProducts()
+      if (productList) setProducts(productList)
     } catch {
       alert("Não foi possível consultar os produtos.")
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
-  }, [])
+  }, [ setProducts, setIsLoading ])
 
   useEffect(() => {
     fetchProducts()
   }, [fetchProducts])
 
-  const handleSave = useCallback(async (data: ChangeProductConfigRequest) => {
-    if (!editingProduct) return
-
+  const handleUpdateProduct = useCallback(async (productComposition: Product & {materials: RawMaterial[]}) => {
     try {
-      await updateProduct(data)
-      setEditingProduct(null)
+      await updateProduct(productComposition)
       fetchProducts()
     } catch {
       alert("Falha ao atualizar o produto.")
+    } finally {
+      setIsEditingProduct(false)
     }
-  }, [editingProduct, fetchProducts])
+  }, [isEditingProduct, fetchProducts])
 
-  const handleCreate = useCallback(async (data: ChangeProductConfigRequest) => {
-    if (!creatingProduct || !data || !creatingProduct.price) return
+  const handleCreateProduct = useCallback(async (productComposition: Product & {materials: MaterialToProduce[]}) => {
+    if (!isCreatingProduct) return
 
-    const product: ChangeProductConfigRequest = {
-      name: creatingProduct.name,
-      stock: creatingProduct.stock, 
-      price: creatingProduct.price.replace(",", "."),
-      materials: data.materials}
+    productComposition.price = String(productComposition.price).replace(",", ".")
 
     try {
-      await createProduct(product)
-      setCreatingProduct(null)
+      await createProduct(productComposition)
+      setIsCreatingProduct(false)
       fetchProducts()
     } catch (error) {
       alert("Não foi possível criar o produto")
     }
-  }, [creatingProduct, fetchProducts])
+  }, [isCreatingProduct, fetchProducts])
+
 
   return (
     <main className="product-content">
       <header className="flex flex-row justify-between">
         <h1>Produtos</h1>
-        <button className="btn-add" onClick={() => setCreatingProduct({name: "", stock: 0, price: '0.0', materials: []})}>Incluir produto</button>
+        <button className="btn-add" onClick={() => setIsCreatingProduct(true)}>Incluir produto</button>
       </header>
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {loading ? <p>Carregando...</p> : <ListProducts products={products} setEditingProduct={setEditingProduct}/>}
+        {isLoading ? <p>Carregando...</p> : <ListProducts products={products} setIsEditing={setIsEditingProduct} />}
       </section>
 
-      {creatingProduct && (
-        <ConfigForm 
-          name={creatingProduct.name}
-          onClose={() => setCreatingProduct(null)}
-          onSave={handleCreate}>
-          <FormCreateProduct product={creatingProduct} setCreatingProduct={setCreatingProduct} />
-        </ConfigForm>
+      {isCreatingProduct && (
+        <Modal 
+          onClose={() => setIsCreatingProduct(false)}>
+          <FormCreateProduct onCreate={handleCreateProduct} onClose={() => setIsCreatingProduct(false)}/>
+        </Modal>
       )}
 
-      {editingProduct && (
-        <ConfigForm 
-          name={editingProduct.name}
-          onClose={() => setEditingProduct(null)}
-          onSave={handleSave}>
-          <FormUpdateProduct name={editingProduct.name} />
-        </ConfigForm>
+      {isEditingProduct && (
+        <Modal 
+          onClose={() => setIsEditingProduct(false)}>
+          <FormUpdateProduct products={products} onUpdate={handleUpdateProduct} />
+        </Modal>
       )}
     </main>
   )
