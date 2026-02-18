@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Card } from "../../../organisms/card/card"
+import { Card } from "../../../molecules/card/card"
 import type { Product } from "../../../../types/product"
 
 interface Props {

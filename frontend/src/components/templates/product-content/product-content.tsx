@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
-import "./product.scss"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { getProducts, updateProduct, createProduct } from "./api"
 import type { Product } from "../../../types/product"
 import type { MaterialToProduce } from "../../../types/raw-material"
@@ -7,12 +6,14 @@ import { ListProducts } from "./sub-template/list-products"
 import { Modal } from "../../molecules/modal/modal"
 import { FormCreateProduct } from "./sub-template/create-product"
 import { FormUpdateProduct } from './sub-template/update-product'
+import "../../atoms/main-content-style.scss"
 
 export function ProductContent() {
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [productNameEditing, setProductNameEditing] = useState<string>("")
   const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
+  const isFirstRender = useRef(true)      // Apenas para tratar problema em development
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true)
@@ -27,10 +28,14 @@ export function ProductContent() {
   }, [ setProducts, setIsLoading ])
 
   useEffect(() => {
-    fetchProducts()
-  }, [fetchProducts])
+    if (isFirstRender.current) {
+      fetchProducts()
+      isFirstRender.current = false
+    }
+    
+  }, [])
 
-  const handleUpdateProduct = useCallback(async (rawMaterials: MaterialToProduce[]) => {
+  const handleUpdateProduct = async (rawMaterials: MaterialToProduce[]) => {
     const productComposition = {
       name: productNameEditing,
       materials: rawMaterials
@@ -44,9 +49,9 @@ export function ProductContent() {
     } finally {
       setProductNameEditing("")
     }
-  }, [productNameEditing, fetchProducts])
+  }
 
-  const handleCreateProduct = useCallback(async (productComposition: Product & {materials: MaterialToProduce[]}) => {
+  const handleCreateProduct = async (productComposition: Product & {materials: MaterialToProduce[]}) => {
     if (!isCreatingProduct) return
 
     productComposition.price = String(productComposition.price).replace(",", ".")
@@ -58,7 +63,7 @@ export function ProductContent() {
     } catch (error) {
       alert("Não foi possível criar o produto")
     }
-  }, [isCreatingProduct, fetchProducts])
+  }
 
 
   return (

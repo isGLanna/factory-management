@@ -1,64 +1,89 @@
-import { useState, useEffect, useCallback, useMemo } from "react"
-import "./product.scss"
-import { getMaterials, requestReplacement} from "./api"
-import type { RawMaterial } from '../../../types/raw-material'
-import { Card } from "../../organisms/card/card"
-import { ConfigForm } from "../../molecules/modal/modal"
+import { useState, useEffect, useCallback, useRef } from "react"
+import { getMaterials, createMaterial, requestReplacement } from "./api"
+import type { RawMaterial, MaterialToReplenish } from "../../../types/raw-material"
+import { ListMaterials } from "./sub-template/list-materials"
+import { Modal } from "../../molecules/modal/modal"
+import { FormCreateMaterial } from "./sub-template/create-material"
+import { FormReplenishMaterial } from "./sub-template/replenish-material"
+import "../../atoms/main-content-style.scss"
 
 export function RawMaterialContent() {
   const [materials, setMaterials] = useState<RawMaterial[]>([])
-  const [loading, setLoading] = useState(false)
-  const [editingMaterial, setEditingMaterial] = useState<RawMaterial | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [materialNameReplenishing, setMaterialNameReplenishing] = useState<string | null>(null)
+  const [isCreatingMaterial, setIsCreatingMaterial] = useState<boolean>(false)
+  const isFirstRender = useRef(true)
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true)
+  const fetchMaterials = useCallback(async () => {
+    setIsLoading(true)
     try {
       const data = await getMaterials()
       if (data) setMaterials(data)
     } catch {
-      alert("Error fetching products")
+      alert("Não foi possível consultar as matérias-primas.")
     } finally {
-      setLoading(false)
+      setIsLoading(false)
+    }
+  }, [setMaterials, setIsLoading])
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      fetchMaterials()
+      isFirstRender.current = false
     }
   }, [])
 
-  useEffect(() => {
-    fetchProducts()
-  }, [fetchProducts])
-
-  const handleCreateMaterial = useCallback(async (material: RawMaterial) => {
-    if (!editingMaterial) return
-
+  const handleReplenishMaterial = async (material: MaterialToReplenish) => {
     try {
       await requestReplacement(material)
-      setEditingMaterial(null)
-      fetchProducts()
-    } catch {
-      alert("Error updating config")
+      fetchMaterials()
+    } catch (error) {
+      alert("Falha ao repor estoque.")
+    } finally {
+      setMaterialNameReplenishing(null)
     }
-  }, [editingMaterial, fetchProducts])
+  }
 
-  const materialsList = useMemo(() => (
-    materials.map((material) => (
-      <div
-        className="cursor-pointer hover:opacity-80 transition-opacity"
-        key={material.name}>
-        <Card item={material} title={material.name} onEdit={setEditingMaterial}>
-          <p><strong>Estoque: </strong>{material.stock}</p>
-        </ Card>
-      </div>
-    ))
-  ), [materials])
+  const handleCreateMaterial = async (material: RawMaterial) => {
+    if (!isCreatingMaterial) return
+
+    try {
+      await createMaterial(material)
+      setIsCreatingMaterial(false)
+      fetchMaterials()
+    } catch (error) {
+      alert("Não foi possível criar a matéria-prima")
+    }
+  }
 
   return (
     <main className="product-content">
-      <h1>Matéria prima</h1>
-
+      <header className="flex flex-row justify-between">
+        <h1>Matéria prima</h1>
+        <button className="btn-add" onClick={() => setIsCreatingMaterial(true)}>Incluir matéria-prima</button>
+      </header>
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {loading ? <p>Carregando...</p> : materialsList}
+        {isLoading ? <p>Carregando...</p> : <ListMaterials materials={materials} setMaterialNameReplenishing={setMaterialNameReplenishing}/>}
       </section>
+
+      {isCreatingMaterial && (
+        <Modal 
+          onClose={() => setIsCreatingMaterial(false)}>
+          <FormCreateMaterial onCreate={handleCreateMaterial} onClose={() => setIsCreatingMaterial(false)}/>
+        </Modal>
+      )}
+
+      {materialNameReplenishing && (
+        <Modal 
+          onClose={() => setMaterialNameReplenishing("")}>
+          <FormReplenishMaterial 
+            rawMaterial={materials.find(m => m.name === materialNameReplenishing)!}
+            onReplenish={handleReplenishMaterial} 
+            onClose={() => setMaterialNameReplenishing("")}/>
+        </Modal>
+      )}
     </main>
   )
 }
