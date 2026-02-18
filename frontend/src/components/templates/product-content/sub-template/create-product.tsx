@@ -12,7 +12,7 @@ interface Props {
 export function FormCreateProduct({ onCreate, onClose }: Props) {
   const [ productComposition, setProductComposition ] = useState<Product & { materials: MaterialToProduce[] }> ({
     name: "",
-    stock: 0,
+    amount: 0,
     price: "0.00",
     materials: [{ name: "", amount: 0 }]
   }) 
@@ -40,8 +40,8 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
       <div className="flex flex-row items-center gap-4">
         <label htmlFor="stock">Estoque:</label>
         <input id="stock" name="estoque" type="text" 
-            value={productComposition.stock} 
-            onChange={e => setProductComposition({ ...productComposition, stock: Number(e.target.value) })}
+            value={productComposition.amount} 
+            onChange={e => setProductComposition({ ...productComposition, amount: Number(e.target.value) })}
           />
 
         <label htmlFor="price">Preço:</label>

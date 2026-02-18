@@ -34,8 +34,8 @@ public class RawMaterialService {
   public RawMaterial replacement(UpdateRawMaterialRequest req) {
     RawMaterial material = repository.findByName(req.getName())
       .orElseThrow(() -> new RuntimeException("Raw material not found."));
-    if (material.getStock() + req.getAmount() >= 0) {
-      material.setStock(material.getStock() + req.getAmount());
+    if (material.getAmount() + req.getAmount() >= 0) {
+      material.setAmount(material.getAmount() + req.getAmount());
     } else {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "There is not enough materail;");
     }
@@ -48,7 +48,7 @@ public class RawMaterialService {
     List<RawMaterialResponse> res = new ArrayList<>();
 
     for(RawMaterial material : materials) {
-      res.add(new RawMaterialResponse(material.getName(), material.getStock()));
+      res.add(new RawMaterialResponse(material.getName(), material.getAmount()));
     }
 
     return res;

@@ -21,14 +21,14 @@ public class Product {
   private String name;
 
   @Column(nullable = false)
-  private Integer stock;
+  private Integer amount;
 
   @Column(nullable = false)
   private float price;
 
-  public Product(String name, int stock, float price) {
+  public Product(String name, int amount, float price) {
     this.name = name;
-    this.stock = stock;
+    this.amount = amount;
     this.price = price;
   }
 }
