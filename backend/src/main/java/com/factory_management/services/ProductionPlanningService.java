@@ -72,7 +72,7 @@ public class ProductionPlanningService {
               .findFirst()
               .orElseThrow(() -> new IllegalArgumentException("Material not found"));
 
-      int quantity = material.getStock() / requirement.getAmount();
+      int quantity = material.getAmount() / requirement.getAmount();
 
       maxValueAllowed.add(quantity);
     }
@@ -92,7 +92,7 @@ public class ProductionPlanningService {
               .findFirst()
               .orElseThrow(() -> new IllegalArgumentException("Material not found"));
 
-      material.setStock(material.getStock() - requirement.getAmount() * quantity);
+      material.setAmount(material.getAmount() - requirement.getAmount() * quantity);
     }
 
     return materials;

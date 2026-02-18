@@ -3,14 +3,14 @@ import axios from "axios"
 
 const url = "http://localhost:8080/raw-material"
 
-export const getMaterials = async (): Promise<RawMaterial[] | undefined> => {
+export const getMaterials = async (): Promise<RawMaterial[]> => {
   try {
     const response = await fetch(url)
 
     return response.json()
   } catch (error) {
     alert("Error fetching products")
-    return undefined
+    return []
   }
 }
 

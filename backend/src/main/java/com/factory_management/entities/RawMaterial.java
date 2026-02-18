@@ -19,11 +19,10 @@ public class RawMaterial {
   private String name;
 
   @Column(nullable = false)
-  private int stock;
+  private int amount;
 
-  public RawMaterial(String name, int stock) {
+  public RawMaterial(String name, int amount) {
     this.name = name;
-    this.stock = stock;
+    this.amount = amount;
   }
 }
-

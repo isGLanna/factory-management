@@ -67,7 +67,7 @@ export function ProductContent() {
 
 
   return (
-    <main className="product-content">
+    <main className="main-content">
       <header className="flex flex-row justify-between">
         <h1>Produtos</h1>
         <button className="btn-add" onClick={() => setIsCreatingProduct(true)}>Incluir produto</button>

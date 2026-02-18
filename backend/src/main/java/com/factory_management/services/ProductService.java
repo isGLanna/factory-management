@@ -36,7 +36,7 @@ public class ProductService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
     }
 
-    Product product = new Product(req.getName(), req.getStock(), req.getPrice());
+    Product product = new Product(req.getName(), req.getAmount(), req.getPrice());
 
     product = productRepository.save(product);
 
@@ -74,8 +74,8 @@ public class ProductService {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
-    if (product.getStock() - req.getAmount() >= 0) {
-      product.setStock(product.getStock() - req.getAmount());
+    if (product.getAmount() - req.getAmount() >= 0) {
+      product.setAmount(product.getAmount() - req.getAmount());
       productRepository.save(product);
     } else {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient product to sell");
@@ -94,7 +94,7 @@ public class ProductService {
 
       int requiredAmount = requirement.getAmount() * req.getAmount();
 
-      if (requiredAmount > material.getStock()) {
+      if (requiredAmount > material.getAmount()) {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient raw material to produce");
       }
     }
@@ -105,11 +105,11 @@ public class ProductService {
 
       int requirementAmount = requirement.getAmount() * req.getAmount();
 
-      material.setStock(material.getStock() - requirementAmount);
+      material.setAmount(material.getAmount() - requirementAmount);
       rawMaterialRepository.save(material);
     }
 
-    product.setStock(product.getStock() + req.getAmount());
+    product.setAmount(product.getAmount() + req.getAmount());
     productRepository.save(product);
   }
 
@@ -119,7 +119,7 @@ public class ProductService {
     List<ProductResponse> res = new ArrayList<>();
 
     for(Product product : products) {
-      res.add(new ProductResponse(product.getName(), product.getStock(), product.getPrice()));
+      res.add(new ProductResponse(product.getName(), product.getAmount(), product.getPrice()));
     }
 
     return res;

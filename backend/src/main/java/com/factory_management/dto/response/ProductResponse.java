@@ -4,16 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ProductResponse {
   private String name;
-  private Integer stock;
+  private Integer amount;
   private float price;
 
-  public ProductResponse(String name, Integer stock, float price) {
+  public ProductResponse(String name, Integer amount, float price) {
     this.name = name;
-    this.stock = stock;
+    this.amount = amount;
     this.price = price;
   }
 
   public String getName() { return name; }
-  public Integer getStock() { return stock; }
+  public Integer getAmount() { return amount; }
   public float getPrice() { return price; }
 }

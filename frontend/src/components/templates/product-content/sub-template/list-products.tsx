@@ -15,7 +15,7 @@ export function ListProducts({ products, setProductNameEditing }: Props) {
       <div
         key={product.name}>
         <Card title={product.name} onEdit={() => setProductNameEditing(product.name)}>
-          <p><strong>Estoque: </strong>{product.stock}</p>
+          <p><strong>Estoque: </strong>{product.amount}</p>
           <p><strong>Preço: </strong>{product.price}</p>
         </Card>
       </div>

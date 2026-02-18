@@ -1,5 +1,5 @@
 export interface Product {
   name: string
-  stock: number
+  amount: number
   price: string
 }

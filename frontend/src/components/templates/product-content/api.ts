@@ -1,4 +1,5 @@
-import type { Product, ChangeProductConfigRequest } from "../../../types/product"
+import type { Product } from "../../../types/product"
+import type { MaterialToProduce } from "../../../types/raw-material"
 import axios from "axios"
 
 const url = "http://localhost:8080/product"
@@ -14,7 +15,7 @@ export const getProducts = async (): Promise<Product[] | undefined> => {
   }
 }
 
-export const createProduct = async (productData: ChangeProductConfigRequest) => {
+export const createProduct = async (productData: Product & {materials: MaterialToProduce[]}) => {
   try {
     await axios.post(`${url}`, {...productData, price: parseFloat(productData.price)})
   } catch (error) {
@@ -22,7 +23,7 @@ export const createProduct = async (productData: ChangeProductConfigRequest) => 
   }
 }
 
-export const updateProduct = async (configData: ChangeProductConfigRequest) => {
+export const updateProduct = async (configData: {name: string} & {materials: MaterialToProduce[]}) => {
   try {
     const response = await axios.patch(`${url}/relationship`, configData)
     return response.data
