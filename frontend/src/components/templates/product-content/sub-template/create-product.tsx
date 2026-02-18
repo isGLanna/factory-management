@@ -2,7 +2,7 @@ import type { Product } from "../../../../types/product"
 import type { MaterialToProduce } from "../../../../types/raw-material"
 import { useState } from "react"
 import { CiTrash } from "react-icons/ci"
-import "./item-modal.scss"
+import "../../../molecules/modal/item-modal.scss"
 
 interface Props {
   onCreate: (product: Product & { materials: MaterialToProduce[]}) => void

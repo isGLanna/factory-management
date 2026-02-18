@@ -1,14 +1,13 @@
-import type { ChangeProductConfigRequest } from "../../../types/product"
+import type { RawMaterial, MaterialToReplenish } from "../../../types/raw-material"
 import axios from "axios"
-import type { RawMaterial } from "../../../types/raw-material"
 
 const url = "http://localhost:8080/raw-material"
 
 export const getMaterials = async (): Promise<RawMaterial[] | undefined> => {
   try {
-    const response = await axios.get(`${url}`)
+    const response = await fetch(url)
 
-    return response.data
+    return response.json()
   } catch (error) {
     alert("Error fetching products")
     return undefined
@@ -17,16 +16,31 @@ export const getMaterials = async (): Promise<RawMaterial[] | undefined> => {
 
 export const createMaterial = async (materialData: RawMaterial) => {
   try {
-    await axios.post(`${url}`, materialData)
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify(materialData)
+    })
   } catch (error) {
     alert("Error creating product")
   }
 }
 
-export const requestReplacement = async (materialData: RawMaterial) => {
+// Lembrar de adpatar função após definir sistema de preços, frete e recursos da empresa
+export const requestReplacement = async (materialData: MaterialToReplenish) => {
+  const formattedMaterialData: { name: string, amount: number } = {
+    name: materialData.name,
+    amount: materialData.amount
+  }
+
+  alert(formattedMaterialData.amount)
+
   try {
-    const response = await axios.patch(`${url}/`, materialData)
-    return response.data
+    await fetch(`${url}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify(formattedMaterialData)
+    })
   } catch (error) {
     alert("Error updating product")
   }
