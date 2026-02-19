@@ -3,21 +3,26 @@ import type { MaterialToProduce } from "../../../types/raw-material"
 import axios from "axios"
 
 const url = "http://localhost:8080/product"
+const header = { "Content-Type": "application/json"}
 
-export const getProducts = async (): Promise<Product[] | undefined> => {
+export const getProducts = async (): Promise<Array<Product & {materials: MaterialToProduce[]}> | null> => {
   try {
-    const response = await axios.get(`${url}`)
+    const response = await fetch(url)
 
-    return response.data
+    return response.json()
   } catch (error) {
     alert("Error fetching products")
-    return undefined
+    return null
   }
 }
 
 export const createProduct = async (productData: Product & {materials: MaterialToProduce[]}) => {
   try {
-    await axios.post(`${url}`, {...productData, price: parseFloat(productData.price)})
+    await fetch(url, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify({ ...productData, price: parseFloat(productData.price)})
+    })
   } catch (error) {
       alert("Error creating product")
   }

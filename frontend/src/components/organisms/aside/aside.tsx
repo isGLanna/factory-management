@@ -24,7 +24,7 @@ export function Aside() {
           <label>Matéria prima</label> 
         </button>
 
-        <button className={pathName === "/optmize-process" ? "active" : ""} onClick={() => navigate({ to: "/raw-material-management"})}>
+        <button className={pathName === "/production-susgestion" ? "active" : ""} onClick={() => navigate({ to: "/production-susgestion"})}>
           <HiLightBulb size={32} />
           <label>Recomendação de produção</label>
         </button>

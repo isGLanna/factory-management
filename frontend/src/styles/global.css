@@ -7,7 +7,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background: linear-gradient(to bottom, #ffffff80, var(--background)), url("../assets/background.png");
+  background: linear-gradient(to bottom, #ffffff80, var(--background)), url("../assets/background.png") center/cover no-repeat fixed;
   color: #e9e9f4;
   
   font-synthesis: none;

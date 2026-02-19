@@ -29,7 +29,7 @@ export function FormReplenishMaterial({ rawMaterial, onReplenish, onClose }: Pro
       </div>
 
       <div className="flex flex-row items-center gap-4">
-        <label htmlFor="stock">Quantidade:</label>
+        <label htmlFor="stock">Repor estoque:</label>
         <input id="stock" name="estoque" type="text" 
             value={replenishMaterial.amount} 
             onChange={e => updateItem("amount", Number(e.target.value))}

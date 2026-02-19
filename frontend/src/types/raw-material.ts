@@ -6,6 +6,7 @@ export interface RawMaterial {
 export interface MaterialToProduce {
   name: string
   amount: number
+  pricePerUnit: string
 }
 
 export interface MaterialToReplenish {

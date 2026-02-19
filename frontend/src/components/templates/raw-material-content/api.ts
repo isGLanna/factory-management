@@ -1,7 +1,7 @@
 import type { RawMaterial, MaterialToReplenish } from "../../../types/raw-material"
-import axios from "axios"
 
 const url = "http://localhost:8080/raw-material"
+const header = { "Content-Type": "application/json"}
 
 export const getMaterials = async (): Promise<RawMaterial[]> => {
   try {
@@ -18,7 +18,7 @@ export const createMaterial = async (materialData: RawMaterial) => {
   try {
     await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json"},
+      headers: header,
       body: JSON.stringify(materialData)
     })
   } catch (error) {
@@ -33,12 +33,10 @@ export const requestReplacement = async (materialData: MaterialToReplenish) => {
     amount: materialData.amount
   }
 
-  alert(formattedMaterialData.amount)
-
   try {
     await fetch(`${url}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json"},
+      headers: header,
       body: JSON.stringify(formattedMaterialData)
     })
   } catch (error) {
@@ -48,7 +46,13 @@ export const requestReplacement = async (materialData: MaterialToReplenish) => {
 
 export const produceProduct = async (name: string) => {
   try {
-    await axios.post(`${url}/produce`, { name })
+    await fetch(`${url}/produce`,
+      {
+        method: "POST",
+        headers: header,
+        body: JSON.stringify({ name })
+      }
+    )
   } catch (error) {
     alert("Error producing product")
   }

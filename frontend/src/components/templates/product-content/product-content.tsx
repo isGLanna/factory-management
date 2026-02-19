@@ -9,7 +9,7 @@ import { FormUpdateProduct } from './sub-template/update-product'
 import "../../atoms/main-content-style.scss"
 
 export function ProductContent() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [productsComposition, setProductsComposition] = useState<Array<Product & { materials: MaterialToProduce[]}>>([])
   const [isLoading, setIsLoading] = useState(false)
   const [productNameEditing, setProductNameEditing] = useState<string>("")
   const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
@@ -19,13 +19,13 @@ export function ProductContent() {
     setIsLoading(true)
     try {
       const productList = await getProducts()
-      if (productList) setProducts(productList)
-    } catch {
+      if (productList) setProductsComposition(productList)
+    } catch (error) {
       alert("Não foi possível consultar os produtos.")
     } finally {
       setIsLoading(false)
     }
-  }, [ setProducts, setIsLoading ])
+  }, [ setProductsComposition, setIsLoading ])
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -44,7 +44,7 @@ export function ProductContent() {
     try {
       await updateProduct(productComposition)
       fetchProducts()
-    } catch {
+    } catch (error) {
       alert("Falha ao atualizar o produto.")
     } finally {
       setProductNameEditing("")
@@ -75,7 +75,7 @@ export function ProductContent() {
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {isLoading ? <p>Carregando...</p> : <ListProducts products={products} setProductNameEditing={setProductNameEditing} />}
+        {isLoading ? <p>Carregando...</p> : <ListProducts productsComposition={productsComposition} setProductNameEditing={setProductNameEditing} />}
       </section>
 
       {isCreatingProduct && (

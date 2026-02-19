@@ -1,8 +1,14 @@
+.card-container[data-type="material"] {
+  width: clamp(8rem,20%, 12rem);
+}
+
+.card-container[data-type="product"] {
+  width: clamp(12rem, 30%, 16rem);
+}
+
 .card-container {
   display: flex;
   flex-direction: column;
-  width: 20%;
-  min-width: 12rem;
   gap: 5px;
   padding: 10px;
   border-radius: 7px;
@@ -20,6 +26,26 @@
     button { 
       all: unset;
       cursor: pointer;
+    }
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    hr {
+      color: lightgrey;
+    }
+
+    table {
+      th {
+        font-weight: 600;
+      }
+
+      tbody:nth-child(even) {
+        background: #efeff4;
+      }
     }
   }
 }
