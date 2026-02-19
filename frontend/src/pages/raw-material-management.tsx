@@ -1,4 +1,4 @@
-import { RawMaterialContent } from "../components/templates/raw-material-management/raw-material-content"
+import { RawMaterialContent } from "../components/templates"
 
 export function RawMaterialManagement() {
   return (

@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RawMaterialManagementRouteImport } from './routes/raw-material-management'
+import { Route as ProductionSusgestionRouteImport } from './routes/production-susgestion'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RawMaterialManagementRoute = RawMaterialManagementRouteImport.update({
   id: '/raw-material-management',
   path: '/raw-material-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductionSusgestionRoute = ProductionSusgestionRouteImport.update({
+  id: '/production-susgestion',
+  path: '/production-susgestion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/production-susgestion': typeof ProductionSusgestionRoute
   '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/production-susgestion': typeof ProductionSusgestionRoute
   '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/production-susgestion': typeof ProductionSusgestionRoute
   '/raw-material-management': typeof RawMaterialManagementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/raw-material-management'
+  fullPaths: '/' | '/production-susgestion' | '/raw-material-management'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/raw-material-management'
-  id: '__root__' | '/' | '/raw-material-management'
+  to: '/' | '/production-susgestion' | '/raw-material-management'
+  id: '__root__' | '/' | '/production-susgestion' | '/raw-material-management'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProductionSusgestionRoute: typeof ProductionSusgestionRoute
   RawMaterialManagementRoute: typeof RawMaterialManagementRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/raw-material-management'
       fullPath: '/raw-material-management'
       preLoaderRoute: typeof RawMaterialManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/production-susgestion': {
+      id: '/production-susgestion'
+      path: '/production-susgestion'
+      fullPath: '/production-susgestion'
+      preLoaderRoute: typeof ProductionSusgestionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProductionSusgestionRoute: ProductionSusgestionRoute,
   RawMaterialManagementRoute: RawMaterialManagementRoute,
 }
 export const routeTree = rootRouteImport

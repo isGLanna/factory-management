@@ -5,6 +5,7 @@ import com.factory_management.dto.request.ChangeProductRequest;
 import com.factory_management.dto.request.CreateProductRequest;
 import com.factory_management.dto.request.ProductMaterialRequest;
 import com.factory_management.dto.response.ProductResponse;
+import com.factory_management.dto.response.MaterialToProduce;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 
@@ -113,13 +114,22 @@ public class ProductService {
     productRepository.save(product);
   }
 
+  // Retorna produto com os materiais e quantidades necessárias para a produção
   public List<ProductResponse> getAll() {
     List<Product> products = productRepository.findAll();
 
     List<ProductResponse> res = new ArrayList<>();
 
     for(Product product : products) {
-      res.add(new ProductResponse(product.getName(), product.getAmount(), product.getPrice()));
+      List<ProductRequirement> requiriments = requirementRepository.getByProductId(product.getId());
+      List<MaterialToProduce> materialsToProduce = new ArrayList<>();
+      
+      for(ProductRequirement requirement : requiriments) {
+        RawMaterial material = requirement.getRawMaterial();
+        materialsToProduce.add(new MaterialToProduce(material.getName(), requirement.getAmount()));
+      }
+
+      res.add(new ProductResponse(product.getName(), product.getAmount(), product.getPrice(), materialsToProduce));
     }
 
     return res;

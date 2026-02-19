@@ -11,13 +11,9 @@ interface MaterialProps {
 export function ListMaterials({ materials, setMaterialNameReplenishing }: MaterialProps) {
   const materialsList = useMemo(() => (
     materials.map((material) => (
-      <div
-        className="cursor-pointer hover:opacity-80 transition-opacity"
-        key={material.name}>
-        <Card title={material.name} onEdit={() => setMaterialNameReplenishing(material.name)}>
-          <p><strong>Estoque: </strong>{material.amount}</p>
-        </ Card>
-      </div>
+      <Card title={material.name} type="material" onEdit={() => setMaterialNameReplenishing(material.name)}>
+        <p><strong>Estoque: </strong>{material.amount}</p>
+      </ Card>
     ))
   ), [materials])
 

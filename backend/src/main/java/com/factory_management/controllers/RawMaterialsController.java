@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 
 import com.factory_management.dto.request.CreateRawMaterialRequest;
 import com.factory_management.dto.request.UpdateRawMaterialRequest;
+import com.factory_management.dto.request.RawMaterialResponse;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.services.RawMaterialService;
 
@@ -27,13 +28,13 @@ public class RawMaterialsController {
   }
 
   @PatchMapping()
-  public ResponseEntity replacement(@RequestBody @Valid UpdateRawMaterialRequest req) {
+  public ResponseEntity<Void> replacement(@RequestBody @Valid UpdateRawMaterialRequest req) {
     service.replacement(req);
     return ResponseEntity.noContent().build();
   }
 
   @GetMapping
-  public ResponseEntity getAll() {
+  public ResponseEntity<RawMaterialResponse>  getAll() {
     return ResponseEntity.ok(service.getAll());
   }
 }

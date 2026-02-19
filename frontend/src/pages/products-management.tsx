@@ -1,4 +1,4 @@
-import { ProductContent } from "../components/templates/product-content/product-content"
+import { ProductContent } from "../components/templates"
 
 export function ProductsManagement() {
   return (
