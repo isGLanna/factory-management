@@ -20,9 +20,9 @@ public interface ProductRequirementsRepository extends JpaRepository<ProductRequ
   @Query(value = "DELETE FROM ProductRequirement as pr WHERE pr.product.id = :productId")
   void deleteRelationship(@Param("productId") Long productId);
 
-  @Query(value = "SELECT new com.factory_management.dto.response.MaterialToProduce(rm.name, pr.amount) " +
-                    "FROM ProductRequirement AS pr" +
-                    "JOIN pr.rawMaterial rm" +
+  @Query(value = "SELECT new com.factory_management.dto.response.MaterialToProduce(rm.name, pr.amount, rm.price) " +
+                    "FROM ProductRequirement AS pr " +
+                    "JOIN pr.rawMaterial rm " +
                   "WHERE pr.product.id = :productId")
   List<MaterialToProduce> findMaterialsByProductId(@Param("productId") Integer productId);
 

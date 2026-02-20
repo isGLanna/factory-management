@@ -1,6 +1,7 @@
 package com.factory_management.controllers;
 
 import com.factory_management.dto.request.ProductRequest;
+import com.factory_management.dto.response.ProductResponse;
 import com.factory_management.dto.response.ProductionPlanningResponse;
 import com.factory_management.services.ProductionPlanningService;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class ProductionPlanningController {
   }
 
   @GetMapping("/max-production")
-  public ResponseEntity<Integer> maxProduce(@RequestBody @Valid ProductRequest req) {
+  public ResponseEntity<ProductResponse> maxProduce(@RequestBody @Valid ProductRequest req) {
     return ResponseEntity.ok(service.CalculateMaxProduction(req.getName()));
   }
 

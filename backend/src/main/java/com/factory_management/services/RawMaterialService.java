@@ -26,7 +26,7 @@ public class RawMaterialService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Raw material already exists.");
     }
 
-    RawMaterial material = new RawMaterial(req.getName(), req.getAmount());
+    RawMaterial material = new RawMaterial(req.getName(), req.getAmount(), 0);
 
     repository.save(material);
   }
@@ -48,7 +48,7 @@ public class RawMaterialService {
     List<RawMaterialResponse> res = new ArrayList<>();
 
     for(RawMaterial material : materials) {
-      res.add(new RawMaterialResponse(material.getName(), material.getAmount()));
+      res.add(new RawMaterialResponse(material.getName(), material.getAmount(), 0));
     }
 
     return res;
