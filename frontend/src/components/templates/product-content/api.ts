@@ -21,7 +21,7 @@ export const createProduct = async (productData: Product & {materials: MaterialT
     await fetch(url, {
       method: "POST",
       headers: header,
-      body: JSON.stringify({ ...productData, price: parseFloat(productData.price)})
+      body: JSON.stringify({ ...productData})
     })
   } catch (error) {
       alert("Error creating product")

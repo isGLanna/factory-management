@@ -13,7 +13,7 @@ export function ProductContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [productNameEditing, setProductNameEditing] = useState<string>("")
   const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
-  const isFirstRender = useRef(true)      // Apenas para tratar problema em development
+  const isFirstRender = useRef(true)      // Apenas para tratar problema com strickmode
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true)
@@ -54,7 +54,7 @@ export function ProductContent() {
   const handleCreateProduct = async (productComposition: Product & {materials: MaterialToProduce[]}) => {
     if (!isCreatingProduct) return
 
-    productComposition.price = String(productComposition.price).replace(",", ".")
+    productComposition.price = Number((productComposition.price * 100).toFixed(0))
 
     try {
       await createProduct(productComposition)
@@ -75,7 +75,13 @@ export function ProductContent() {
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {isLoading ? <p>Carregando...</p> : <ListProducts productsComposition={productsComposition} setProductNameEditing={setProductNameEditing} />}
+        {isLoading ? <p>Carregando...</p> : <ListProducts productsComposition={productsComposition.map(product => ({
+          ...product,
+          materials: product.materials.map(material => ({
+            ...material,
+            price: material.price
+          }))
+        }))} setProductNameEditing={setProductNameEditing} />}
       </section>
 
       {isCreatingProduct && (

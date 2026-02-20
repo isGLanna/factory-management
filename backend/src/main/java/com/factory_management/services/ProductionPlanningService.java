@@ -29,12 +29,12 @@ public class ProductionPlanningService {
     this.rawMaterialRepository = rawMaterialRepository;
   }
 
-  public ProductionPlanningResponse OptmizeProcess() {
+  public List<ProductFormatting> OptmizeProcess() {
     List<Product> products = productRepository.findAll();
     List<RawMaterial> materials = rawMaterialRepository.findAll();
     List<ProductRequirement> requirements = requirementRepository.findAll();
 
-    ProductionPlanningResponse  productionPlanning = new ProductionPlanningResponse();
+    List<ProductFormatting>  productionPlanning = new ArrayList<>();
     products.sort(Comparator.comparing(Product::getPrice).reversed());
 
     for(Product product : products) {
@@ -53,9 +53,11 @@ public class ProductionPlanningService {
             .orElseThrow(() -> new RuntimeException("Product not found."));
 
     List<ProductRequirement> requirements = requirementRepository.findByProductId(product.getId());
-    List<RawMaterial> materials = requirements.stream()
-                                              .map(ProductRequirement::getRawMaterial)
-                                              .collect(Collectors.toList());
+    List<RawMaterial> materials = new ArrayList<>();
+
+    for (ProductRequirement requirement : requirements) {
+      materials.add(requirement.getRawMaterial());
+    }
 
     ProductionResult result = MaxProduce(product.getId(), requirements, materials);
     int profit = product.getPrice() * result.getQuantityMaterial();

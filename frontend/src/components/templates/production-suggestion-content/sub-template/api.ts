@@ -1,10 +1,9 @@
-import type { Product } from "../../../../types/product";
-import type { MaterialToProduce } from "../../../../types/raw-material";
+import type { ProductSuggestion } from "../../../../types/product-suggestions";
 
-const url = "http://localhost:3000/api"
+const url = "http://localhost:8080"
 const header = { "Content-Type": "application/json" }
 
-export async function fetchProductionSuggestions(): Promise<Array<Product & { materials: MaterialToProduce[] }>> {
+export async function fetchProductionSuggestions(): Promise<ProductSuggestion[] | []> {
   try {
     const response = await fetch(`${url}/production-suggestion`)
 
@@ -16,18 +15,14 @@ export async function fetchProductionSuggestions(): Promise<Array<Product & { ma
   }
 }
 
-export async function maxProductionAmount(productName: string): Promise<void> {
+export async function maxProductionAmount(productName: string): Promise<ProductSuggestion | null> {
   try {
-    const response = await fetch(`${url}/max-production`, {
-      method: "GET",
-      headers: header,
-      body: JSON.stringify({ productName })
-    })
+    const response = await fetch(`${url}/max-production?name=${encodeURIComponent(productName)}`)
 
     if (!response.ok) throw new Error("Falha ao calcular a quantidade máxima de produção")
 
     return response.json()
   } catch (error) {
-    return
+    return null
   }
 }

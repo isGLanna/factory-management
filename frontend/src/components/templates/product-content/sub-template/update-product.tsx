@@ -11,7 +11,7 @@ interface Props {
 
 export function FormUpdateProduct({ productName, onUpdate, onClose }: Props) {
   const [ rawMaterials, setRawMaterials ] = useState<MaterialToProduce[]> (
-    [{ name: "", amount: 0 }]
+    [{ name: "", amount: 0, price: 0 }]
   ) 
 
   const updateItem = (index: number, field: keyof MaterialToProduce, value: string | number) => {
@@ -50,7 +50,7 @@ export function FormUpdateProduct({ productName, onUpdate, onClose }: Props) {
         </div>
       </div>
 
-      <button className="btn-add" type="button" onClick={() => setRawMaterials([...rawMaterials, {name: "", amount: 0 }])}>
+      <button className="btn-add" type="button" onClick={() => setRawMaterials([...rawMaterials, {name: "", amount: 0, price: 0 }])}>
           Adicionar material
       </button>
 
