@@ -24,9 +24,9 @@ public class Product {
   private Integer amount;
 
   @Column(nullable = false)
-  private float price;
+  private int price;
 
-  public Product(String name, int amount, float price) {
+  public Product(String name, int amount, int price) {
     this.name = name;
     this.amount = amount;
     this.price = price;

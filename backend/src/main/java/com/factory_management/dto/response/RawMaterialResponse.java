@@ -13,4 +13,5 @@ public class RawMaterialResponse{
 
   public String getName(){ return name; }
   public int getAmount() { return amount; }
+  public int getPrice() { return price; }
 }

@@ -11,12 +11,11 @@ public class CreateProductRequest {
 
   @NotNull
   @Positive
-  private Integer amount;
+  private int amount;
 
   @NotNull
   @Positive
-  @Digits(integer = 10, fraction = 2)
-  private float price;
+  private int price;
 
   @NotEmpty
   @Valid
@@ -26,11 +25,11 @@ public class CreateProductRequest {
     return name;
   }
 
-  public Integer getAmount() {
+  public int getAmount() {
     return amount;
   }
 
-  public float getPrice(){
+  public int getPrice(){
     return price;
   }
 

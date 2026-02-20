@@ -1,12 +1,11 @@
 package com.factory_management.services;
 
-import com.factory_management.dto.response.MaterialToProduce;
 import com.factory_management.dto.response.ProductFormatting;
+import com.factory_management.dto.response.ProductionResult;
 import com.factory_management.dto.response.ProductionPlanningResponse;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 import com.factory_management.entities.RawMaterial;
-import com.factory_management.dto.response.ProductResponse;
 import com.factory_management.repository.ProductRepository;
 import com.factory_management.repository.ProductRequirementsRepository;
 import com.factory_management.repository.RawMaterialRepository;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductionPlanningService {
@@ -31,42 +31,39 @@ public class ProductionPlanningService {
 
   public ProductionPlanningResponse OptmizeProcess() {
     List<Product> products = productRepository.findAll();
-    List<RawMaterial> materails = rawMaterialRepository.findAll();
+    List<RawMaterial> materials = rawMaterialRepository.findAll();
     List<ProductRequirement> requirements = requirementRepository.findAll();
 
     ProductionPlanningResponse  productionPlanning = new ProductionPlanningResponse();
     products.sort(Comparator.comparing(Product::getPrice).reversed());
 
     for(Product product : products) {
-      int quantity = MaxProduce(product.getId(), requirements, materails);
-      materails = DiscountMaterials(materails, requirements, quantity, product.getId());
+      ProductionResult result = MaxProduce(product.getId(), requirements, materials);
+      materials = DiscountMaterials(materials, requirements, result.getQuantityMaterial(), product.getId());
+      int profit = product.getPrice() * result.getQuantityMaterial();
 
-      productionPlanning.add(new ProductFormatting(product.getName(), quantity, product.getPrice()));
+      productionPlanning.add(new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost()));
     }
 
     return productionPlanning;
   }
 
-  public ProductResponse CalculateMaxProduction(String name) {
+  public ProductFormatting CalculateMaxProduction(String name) {
     Product product = productRepository.findByName(name)
             .orElseThrow(() -> new RuntimeException("Product not found."));
 
     List<ProductRequirement> requirements = requirementRepository.findByProductId(product.getId());
-    List<MaterialToProduce> materialsToProduce = new ArrayList<>();
-    List<RawMaterial> materials = new ArrayList<>();
+    List<RawMaterial> materials = requirements.stream()
+                                              .map(ProductRequirement::getRawMaterial)
+                                              .collect(Collectors.toList());
 
-    for (ProductRequirement requirement : requirements) {
-      materials.add(requirement.getRawMaterial());
+    ProductionResult result = MaxProduce(product.getId(), requirements, materials);
+    int profit = product.getPrice() * result.getQuantityMaterial();
 
-      materialsToProduce.add(new MaterialToProduce(name, requirement.getAmount(), materials.get(materials.size() - 1).getPrice()));
-    }
-
-    int quantityProduct = MaxProduce(product.getId(), requirements, materials);
-
-    return new ProductResponse(product.getName(), quantityProduct, product.getPrice(), materialsToProduce);
+    return new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost());
   }
 
-  public int MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
+  public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
     List<Integer> maxValueAllowed = new ArrayList<>();
 
     for (ProductRequirement requirement : requirements) {
@@ -85,7 +82,15 @@ public class ProductionPlanningService {
       maxValueAllowed.add(quantity);
     }
 
-    return Collections.min(maxValueAllowed);
+    int cost = 0;
+    int constraintValue = Collections.min(maxValueAllowed);
+
+    // Cálculo do custo de produção
+    for (ProductRequirement requirement : requirements) {
+      cost += constraintValue * requirement.getAmount() * requirement.getRawMaterial().getPrice();
+    }
+
+    return new ProductionResult(constraintValue, cost);
   }
 
   public List<RawMaterial> DiscountMaterials(List<RawMaterial> materials, List<ProductRequirement> requirements, Integer quantity, Long productId) {

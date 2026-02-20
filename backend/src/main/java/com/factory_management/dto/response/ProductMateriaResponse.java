@@ -10,12 +10,12 @@ public class ProductMateriaResponse {
 
   @NotNull
   @Positive
-  private Integer amount;
+  private int amount;
 
   public String getName() {
     return name;
   }
 
-  public Integer getAmount() {  return amount;  }
+  public int getAmount() {  return amount;  }
 
 }
