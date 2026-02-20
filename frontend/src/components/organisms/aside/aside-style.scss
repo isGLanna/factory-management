@@ -30,3 +30,20 @@
     }
   }
 }
+
+@media (max-width: 1024px) {
+  .aside-content {
+    flex-direction: row;
+    height: max-content;
+
+    button {
+      height: 60px;
+      aspect-ratio: 2/1;
+
+      svg {
+        height: 24px;
+        width: 24px;
+      }
+    }
+  }
+}

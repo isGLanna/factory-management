@@ -1,4 +1,12 @@
 .table-content {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 8px);
+
+  header {
+    font-size: 16px;
+    font-weight: 600;
+  }
   
   tbody:nth-child(even) {
     background: #efeff4;
