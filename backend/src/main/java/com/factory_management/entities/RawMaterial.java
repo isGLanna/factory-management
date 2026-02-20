@@ -21,8 +21,12 @@ public class RawMaterial {
   @Column(nullable = false)
   private int amount;
 
-  public RawMaterial(String name, int amount) {
+  @Column(nullable = true)
+  private int price;
+
+  public RawMaterial(String name, int amount, int price) {
     this.name = name;
     this.amount = amount;
+    this.price = price;
   }
 }

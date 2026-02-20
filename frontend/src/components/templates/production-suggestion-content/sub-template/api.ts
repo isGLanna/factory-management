@@ -16,8 +16,10 @@ export async function fetchProductionSuggestions(): Promise<Array<Product & { ma
   }
 }
 
-export async function maxProductionAmount(productName: string): Promise<number> {
+export async function maxProductionAmount(productName: string): Promise<void> {
   try {
-    const resonse = await fetch(`${url}/max-production`)
+    const response = await fetch(`${url}/max-production`)
+  } catch (error) {
+    return
   }
 }

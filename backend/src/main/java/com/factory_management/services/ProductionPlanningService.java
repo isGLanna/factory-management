@@ -1,5 +1,6 @@
 package com.factory_management.services;
 
+import com.factory_management.dto.response.MaterialToProduce;
 import com.factory_management.dto.response.ProductFormatting;
 import com.factory_management.dto.response.ProductionPlanningResponse;
 import com.factory_management.entities.Product;
@@ -46,20 +47,26 @@ public class ProductionPlanningService {
     return productionPlanning;
   }
 
-  public List<ProductResponse> CalculateMaxProduction(String name) {
+  public ProductResponse CalculateMaxProduction(String name) {
     Product product = productRepository.findByName(name)
             .orElseThrow(() -> new RuntimeException("Product not found."));
 
     List<ProductRequirement> requirements = requirementRepository.findByProductId(product.getId());
+    List<MaterialToProduce> materialsToProduce = new ArrayList<>();
     List<RawMaterial> materials = new ArrayList<>();
 
     for (ProductRequirement requirement : requirements) {
       materials.add(requirement.getRawMaterial());
+
+      materialsToProduce.add(new MaterialToProduce(name, requirement.getAmount(), materials.get(materials.size() - 1).getPrice()));
     }
-    return MaxProduce(product.getId(), requirements, materials);
+
+    int quantityProduct = MaxProduce(product.getId(), requirements, materials);
+
+    return new ProductResponse(product.getName(), quantityProduct, product.getPrice(), materialsToProduce);
   }
 
-  public Integer MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
+  public int MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
     List<Integer> maxValueAllowed = new ArrayList<>();
 
     for (ProductRequirement requirement : requirements) {

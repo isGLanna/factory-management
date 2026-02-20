@@ -11,11 +11,17 @@ public class UpdateRawMaterialRequest {
   @NotNull
   private Integer amount;
 
+  private int price;
+
   public String getName(){
     return name;
   }
 
-  public Integer getAmount(){
+  public int getAmount(){
     return amount;
+  }
+
+  public int getPrice() {
+    return price;
   }
 }
