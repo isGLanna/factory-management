@@ -6,7 +6,6 @@
 
   table{
     width: 100%;
-    min-height: 100px;
     background-color: #fafafa;
     border-radius: 5px;
     overflow: hidden;
@@ -14,7 +13,7 @@
     thead {
       tr{
         display: grid;
-        grid-template-columns: 5fr 1fr 2fr 2fr;
+        grid-template-columns: 3fr 1fr 2fr 2fr;
         th{
           padding: 5px 5px;
           font-size: 16px;
@@ -26,10 +25,11 @@
     }
   
     tbody:nth-child(even) {
+      min-height: 80px;
       tr{
         background: #efeff4;
         display: grid;
-        grid-template-columns: 5fr 1fr 2fr 2fr;
+        grid-template-columns: 3fr 1fr 2fr 2fr;
         th{
           padding: 5px 5px;
           font-size: 14px;
@@ -37,7 +37,19 @@
           text-align: left;
           text-wrap: wrap;
         }
+
+        &.empty {
+          height: 80px;
+          grid-template-columns: auto;
+          place-items: center;
+        }
       }
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .table-container {
+    width: 100%;
   }
 }

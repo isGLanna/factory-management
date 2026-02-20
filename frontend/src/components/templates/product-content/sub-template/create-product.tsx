@@ -13,8 +13,8 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
   const [ productComposition, setProductComposition ] = useState<Product & { materials: MaterialToProduce[] }> ({
     name: "",
     amount: 0,
-    price: "0.00",
-    materials: [{ name: "", amount: 0 }]
+    price: 0,
+    materials: [{ name: "", amount: 0, price: 0 }]
   }) 
 
   const updateItem = (index: number, field: keyof MaterialToProduce, value: string | number) => {
@@ -46,8 +46,8 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
 
         <label htmlFor="price">Preço:</label>
         <input id="price" name="preço" type="text" 
-          value={productComposition.price}
-          onChange={e => setProductComposition({ ...productComposition, price: e.target.value })}
+          value={(productComposition.price / 100).toFixed(2)}
+          onChange={e => setProductComposition({ ...productComposition, price: Number(e.target.value) })}
         />
       </div>
 
@@ -74,7 +74,7 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
         </div>
       </div>
 
-      <button className="btn-add" type="button" onClick={() => setProductComposition({ ...productComposition, materials: [...productComposition.materials, {name: "", amount: 0}] })}>
+      <button className="btn-add" type="button" onClick={() => setProductComposition({ ...productComposition, materials: [...productComposition.materials, {name: "", amount: 0, price: 0}] })}>
           Adicionar material
       </button>
 

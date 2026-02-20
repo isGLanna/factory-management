@@ -1,0 +1,33 @@
+.btn[data-type="submit"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.btn {
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &.add {
+    background: #f2f4f8;
+    color: #444;
+    width: 50%;
+    align-self: center;
+    border: 1px dashed #ccc;
+  }
+
+  &.action {
+    background: #2563eb;
+    color: white;
+  }
+
+  &.cancel {
+    background: #f2f4f8;
+    border: 1px solid #ccc;
+    color: #777;
+  }
+}

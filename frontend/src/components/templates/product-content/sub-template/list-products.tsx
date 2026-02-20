@@ -3,7 +3,7 @@ import { Card } from "../../../molecules/card/card"
 import type { Product } from "../../../../types/product"
 
 interface Props {
-  productsComposition: Array<Product & { materials: { name: string, amount: number, pricePerUnit: string}[]}>
+  productsComposition: Array<Product & { materials: { name: string, amount: number, price: number}[]}>
   setProductNameEditing: (setProductNameEditing: string) => void
 }
 
@@ -15,7 +15,7 @@ export function ListProducts({ productsComposition, setProductNameEditing }: Pro
       <Card title={product.name} type="product" onEdit={() => setProductNameEditing(product.name)}>
         <div>  
           <p><strong>Estoque: </strong>{product.amount}</p>
-          <p><strong>Preço: </strong>{product.price}</p>
+          <p><strong>Preço: </strong>{(product.price/100).toFixed(2)}</p>
         </div>
 
         <hr />
@@ -34,7 +34,7 @@ export function ListProducts({ productsComposition, setProductNameEditing }: Pro
                 <tr>
                   <td className="px-2">{material.name}</td>
                   <td>{material.amount}</td>
-                  <td>{material.pricePerUnit || "0.00"}</td>
+                  <td>{(material.price/100).toFixed(2)}</td>
                 </tr>
               </tbody>
               ))}

@@ -4,7 +4,7 @@ export function PendingProduction() {
   return (
     <div className="table-container">
       <header>
-        <h3></h3>
+        <h3>Produção Pendente</h3>
       </header>
       <table>
         <thead>

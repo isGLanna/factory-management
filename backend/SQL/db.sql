@@ -1,13 +1,15 @@
 CREATE TABLE raw_material (
 	id serial PRIMARY KEY,
 	name VARCHAR(30),
-	stock INT
+	amount INT,
+  price INT
 );
 
 CREATE TABLE product (
   id serial PRIMARY KEY,
   name VARCHAR(30),
-  stock INT
+  amount INT,
+  price INT
 );
 
 CREATE product_requirements (
@@ -26,6 +28,6 @@ CREATE product_requirements (
     ON DELETE CASCADE
 
 
-  UNIQUE (product_id, raw_material_id
+  UNIQUE (product_id, raw_material_id)
 )
 
