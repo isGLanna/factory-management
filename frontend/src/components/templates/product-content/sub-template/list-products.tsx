@@ -32,7 +32,7 @@ export function ListProducts({ productsComposition, setProductNameEditing }: Pro
           {product.materials.slice(0, 3).map((material) => (
               <tbody>
                 <tr>
-                  <td>{material.name}</td>
+                  <td className="px-2">{material.name}</td>
                   <td>{material.amount}</td>
                   <td>{material.pricePerUnit || "0.00"}</td>
                 </tr>

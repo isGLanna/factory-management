@@ -8,9 +8,3 @@ export interface MaterialToProduce {
   amount: number
   pricePerUnit: string
 }
-
-export interface MaterialToReplenish {
-  name: string,
-  amount: number,
-  pricePerUnit: string
-}

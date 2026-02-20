@@ -114,7 +114,6 @@ public class ProductService {
     productRepository.save(product);
   }
 
-  // Retorna produto com os materiais e quantidades necessárias para a produção
   public List<ProductResponse> getAll() {
     List<Product> products = productRepository.findAll();
 
@@ -126,7 +125,7 @@ public class ProductService {
       
       for(ProductRequirement requirement : requiriments) {
         RawMaterial material = requirement.getRawMaterial();
-        materialsToProduce.add(new MaterialToProduce(material.getName(), requirement.getAmount()));
+        materialsToProduce.add(new MaterialToProduce(material.getName(), requirement.getAmount(), 0));
       }
 
       res.add(new ProductResponse(product.getName(), product.getAmount(), product.getPrice(), materialsToProduce));

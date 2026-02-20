@@ -1,15 +1,43 @@
-.table-content {
+.table-container {
   display: flex;
   flex-direction: column;
   width: calc(50% - 8px);
+  gap: 10px;
 
-  header {
-    font-size: 16px;
-    font-weight: 600;
-  }
-  
-  tbody:nth-child(even) {
-    background: #efeff4;
+  table{
     width: 100%;
+    min-height: 100px;
+    background-color: #fafafa;
+    border-radius: 5px;
+    overflow: hidden;
+    
+    thead {
+      tr{
+        display: grid;
+        grid-template-columns: 5fr 1fr 2fr 2fr;
+        th{
+          padding: 5px 5px;
+          font-size: 16px;
+          font-weight: 500;
+          text-align: left;
+          text-wrap: wrap;
+        }
+      }
+    }
+  
+    tbody:nth-child(even) {
+      tr{
+        background: #efeff4;
+        display: grid;
+        grid-template-columns: 5fr 1fr 2fr 2fr;
+        th{
+          padding: 5px 5px;
+          font-size: 14px;
+          font-weight: 400;
+          text-align: left;
+          text-wrap: wrap;
+        }
+      }
+    }
   }
 }

@@ -10,7 +10,7 @@ export function RootLayout({ children }: Props) {
   return (
     <div className='h-full w-full gap-2 flex flex-col items-center justify-center lg:flex-row'>
       <Aside />
-      <div className='h-full w-[95dvw] flex items-start lg:items-center lg:w-[75dvw]'>{children}</div>
+      <div className='h-full w-[90dvw] flex items-start lg:items-center lg:w-[75dvw]'>{children}</div>
     </div>
   )
 }
