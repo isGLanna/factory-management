@@ -12,7 +12,7 @@ export function Aside() {
   })
 
   return (
-    <div className='flex h-full items-center p-8'>
+    <div className='flex items-center p-4'>
       <aside className="aside-content flex flex-col gap-4">
         <button className={pathName === "/" ? "active" : ""} onClick={() => navigate({ to: "/"})}>
           <AiOutlineProduct size={32}/>
@@ -24,12 +24,13 @@ export function Aside() {
           <label>Matéria prima</label> 
         </button>
 
-        <button className={pathName === "/production-susgestion" ? "active" : ""} onClick={() => navigate({ to: "/production-susgestion"})}>
+        <button className={pathName === "/production-suggestion" ? "active" : ""} onClick={() => navigate({ to: "/production-suggestion"})}>
           <HiLightBulb size={32} />
-          <label>Recomendação de produção</label>
+          <label>Recomendação</label>
         </button>
-
-        <button className={pathName === "/sell" ? "active" : ""} onClick={() => navigate({ to: "/raw-material-management"})}>
+    
+        {/*  Função a ser implementada no futuro */}
+        <button className={pathName === "/sell" ? "active" : ""} onClick={() => navigate({ to: "/production-suggestion"})}>
           <PiMoneyDuotone size={32}/>
           <label>Vender</label>
         </button>
