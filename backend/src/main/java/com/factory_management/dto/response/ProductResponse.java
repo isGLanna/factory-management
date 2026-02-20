@@ -5,10 +5,10 @@ import java.util.List;
 public class ProductResponse {
   private String name;
   private Integer amount;
-  private float price;
+  private int price;
   List<MaterialToProduce> materials;
 
-  public ProductResponse(String name, Integer amount, float price, List<MaterialToProduce> materials) {
+  public ProductResponse(String name, Integer amount, int price, List<MaterialToProduce> materials) {
     this.name = name;
     this.amount = amount;
     this.price = price;
@@ -16,7 +16,7 @@ public class ProductResponse {
   }
 
   public String getName() { return name; }
-  public Integer getAmount() { return amount; }
-  public float getPrice() { return price; }
+  public int getAmount() { return amount; }
+  public int getPrice() { return price; }
   public List<MaterialToProduce> getMaterials() { return materials; }
 }

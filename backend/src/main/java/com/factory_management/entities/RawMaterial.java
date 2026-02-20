@@ -22,7 +22,7 @@ public class RawMaterial {
   private int amount;
 
   @Column(nullable = true)
-  private int price;
+  private Integer price;
 
   public RawMaterial(String name, int amount, int price) {
     this.name = name;
