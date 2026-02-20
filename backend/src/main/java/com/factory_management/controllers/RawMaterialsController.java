@@ -7,9 +7,11 @@ import jakarta.validation.Valid;
 
 import com.factory_management.dto.request.CreateRawMaterialRequest;
 import com.factory_management.dto.request.UpdateRawMaterialRequest;
-import com.factory_management.dto.request.RawMaterialResponse;
+import com.factory_management.dto.response.RawMaterialResponse;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.services.RawMaterialService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/raw-material")
@@ -34,7 +36,7 @@ public class RawMaterialsController {
   }
 
   @GetMapping
-  public ResponseEntity<RawMaterialResponse>  getAll() {
+  public ResponseEntity<List<RawMaterialResponse>>  getAll() {
     return ResponseEntity.ok(service.getAll());
   }
 }

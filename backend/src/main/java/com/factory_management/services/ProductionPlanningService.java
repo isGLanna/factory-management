@@ -5,6 +5,7 @@ import com.factory_management.dto.response.ProductionPlanningResponse;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 import com.factory_management.entities.RawMaterial;
+import com.factory_management.dto.response.ProductResponse;
 import com.factory_management.repository.ProductRepository;
 import com.factory_management.repository.ProductRequirementsRepository;
 import com.factory_management.repository.RawMaterialRepository;
@@ -45,7 +46,7 @@ public class ProductionPlanningService {
     return productionPlanning;
   }
 
-  public Integer CalculateMaxProduction(String name) {
+  public List<ProductResponse> CalculateMaxProduction(String name) {
     Product product = productRepository.findByName(name)
             .orElseThrow(() -> new RuntimeException("Product not found."));
 

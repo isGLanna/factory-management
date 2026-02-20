@@ -1,5 +1,6 @@
 package com.factory_management.repository;
 
+import com.factory_management.dto.response.MaterialToProduce;
 import com.factory_management.entities.ProductRequirement;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,12 @@ public interface ProductRequirementsRepository extends JpaRepository<ProductRequ
   @Transactional
   @Query(value = "DELETE FROM ProductRequirement as pr WHERE pr.product.id = :productId")
   void deleteRelationship(@Param("productId") Long productId);
+
+  @Query(value = "SELECT new com.factory_management.dto.response.MaterialToProduce(rm.name, pr.amount) " +
+                    "FROM ProductRequirement AS pr" +
+                    "JOIN pr.rawMaterial rm" +
+                  "WHERE pr.product.id = :productId")
+  List<MaterialToProduce> findMaterialsByProductId(@Param("productId") Integer productId);
 
   List<ProductRequirement> findByProductId(Long productId);
   }

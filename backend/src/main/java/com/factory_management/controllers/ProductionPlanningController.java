@@ -19,7 +19,7 @@ public class ProductionPlanningController {
     this.service = service;
   }
 
-  @GetMapping("/production")
+  @GetMapping("/production-suggestion")
   public ResponseEntity<ProductionPlanningResponse> productionPlanning() {
     return ResponseEntity.ok(service.OptmizeProcess());
   }
