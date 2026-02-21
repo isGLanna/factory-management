@@ -6,6 +6,11 @@
 }
 
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-direction: row;
   transition: opacity 200ms;
 
   &:hover {
