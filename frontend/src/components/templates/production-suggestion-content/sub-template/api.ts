@@ -26,3 +26,15 @@ export async function maxProductionAmount(productName: string): Promise<ProductS
     return null
   }
 }
+
+export async function produce(name: string, amount: number): Promise<void> {
+  try {
+    await fetch(`${url}/product/produce`, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify({ name, amount})
+    })
+  } catch (error) {
+    alert("Não foi possível encaminhar a produção.")
+  }
+}

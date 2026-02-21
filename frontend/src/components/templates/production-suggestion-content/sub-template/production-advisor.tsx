@@ -1,10 +1,17 @@
+import React, { useState } from 'react'
 import type { ProductSuggestion } from "../../../../types/product-suggestions"
 import { fetchProductionSuggestions, maxProductionAmount } from "./api"
 import { SearchBar } from "../../../molecules/seach-bar/seach-bar"
+import { IoIosArrowDroprightCircle } from "react-icons/io"
 import "../../../atoms/button-style.scss"
-import { useState } from 'react'
 
-export function ProductionAdvisor() {
+interface productionAdvisorProps {
+  setToProduce: (products: ProductSuggestion) => void
+}
+
+// Aplicar useMemo na função para recarregar somente quando algo mudar
+
+export const ProductionAdvisor = React.memo(({setToProduce}: productionAdvisorProps) => {
   const [products, setProducts] = useState<ProductSuggestion[]>([])
   
   const handleSearch = async (description: string) => {
@@ -53,6 +60,9 @@ export function ProductionAdvisor() {
               <th>{product.amount}</th>
               <th>{(product.income/100).toFixed(2)}</th>
               <th>{(product.cost/100).toFixed(2)}</th>
+              <th className="translate-x-[-15px] p-[0px]">
+                <IoIosArrowDroprightCircle size={20} onClick={() => setToProduce(product)}/>
+              </th>
             </tr>
           ))) : (
           <tr className="empty"><span>Nenhuma produto encontrado</span></tr>
@@ -61,4 +71,4 @@ export function ProductionAdvisor() {
       </table>
     </div>
   )
-}
+})

@@ -1,4 +1,5 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { Theme } from "@radix-ui/themes"
 import { routeTree } from './routeTree.gen'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -15,6 +16,8 @@ declare module '@tanstack/react-router' {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={route} />
+    <Theme>
+      <RouterProvider router={route} />
+    </Theme>
   </StrictMode>,
 )
