@@ -1,6 +1,5 @@
 @import "./colors.css";
 @import "tailwindcss";
-@import "@radix-ui/themes/styles.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -31,23 +30,13 @@ a:hover {
   color: var(--branding-700);
 }
 
-html {
-  height: 100dvh;
-  width: 100dvw;
-  margin: 0;
-}
-
-body {
+body, html, #root {
   height: 100dvh;
   width: 100dvw;
   margin: 0;
   padding: 0;
 }
 
-#root {
-  height: 100%;
-  width: 100%;
-}
 
 label, p {
   font-size: 14px;

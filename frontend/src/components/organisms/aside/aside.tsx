@@ -3,6 +3,7 @@ import { AiOutlineProduct } from "react-icons/ai"
 import { SiDatabricks } from "react-icons/si"
 import { HiLightBulb } from "react-icons/hi"
 import { PiMoneyDuotone } from "react-icons/pi"
+import { InfoTooltip } from '../../molecules/tooltip/tooltip'
 import './aside-style.scss'
 
 export function Aside() {
@@ -30,10 +31,12 @@ export function Aside() {
         </button>
     
         {/*  Função a ser implementada no futuro */}
-        <button className={pathName === "/sell" ? "active" : ""} onClick={() => navigate({ to: "/production-suggestion"})}>
-          <PiMoneyDuotone size={32}/>
-          <label>Vender</label>
-        </button>
+        <InfoTooltip content="Disponível no futuro">
+          <button className={pathName === "/sell" ? "active" : ""} onClick={() => navigate({ to: "/production-suggestion"})}>
+            <PiMoneyDuotone size={32}/>
+            <label>Vender</label>
+          </button>
+        </InfoTooltip>
       </aside>
     </div>
   )
