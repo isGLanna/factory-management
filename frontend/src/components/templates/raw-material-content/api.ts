@@ -1,6 +1,6 @@
 import type { RawMaterial } from "../../../types/raw-material"
 
-const url = "http://localhost:8080/raw-material"
+const url = (import.meta.env.VITE_API_URL || "http://localhost:8080") + "/raw-material"
 const header = { "Content-Type": "application/json"}
 
 export const getMaterials = async (): Promise<RawMaterial[]> => {

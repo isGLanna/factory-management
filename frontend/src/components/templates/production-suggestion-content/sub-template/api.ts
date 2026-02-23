@@ -1,6 +1,6 @@
 import type { ProductSuggestion } from "../../../../types/product-suggestions";
 
-const url = "http://localhost:8080"
+const url = import.meta.env.VITE_API_URL || "http://localhost:8080"
 const header = { "Content-Type": "application/json" }
 
 export async function fetchProductionSuggestions(): Promise<ProductSuggestion[] | []> {

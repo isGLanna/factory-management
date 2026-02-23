@@ -1,7 +1,7 @@
 import type { Product } from "../../../types/product"
 import type { MaterialToProduce } from "../../../types/raw-material"
 
-const url = "http://localhost:8080/product"
+const url = (import.meta.env.VITE_API_URL || "http://localhost:8080") + "/product"
 const header = { "Content-Type": "application/json"}
 
 export const getProducts = async (): Promise<Array<Product & {materials: MaterialToProduce[]}> | null> => {
