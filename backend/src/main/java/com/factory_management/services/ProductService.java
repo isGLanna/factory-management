@@ -16,6 +16,7 @@ import com.factory_management.repository.RawMaterialRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class ProductService {
     this.rawMaterialRepository = rawMaterialRepository;
   }
 
+  @Transactional
   public void create(CreateProductRequest req) {
     if (productRepository.existsByName(req.getName())) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists.");
@@ -40,6 +42,8 @@ public class ProductService {
     Product product = new Product(req.getName(), req.getAmount(), req.getPrice());
 
     product = productRepository.save(product);
+
+    if(req.getMaterials() == null) return;
 
     for (ProductMaterialRequest requirement : req.getMaterials()) {
       RawMaterial material = rawMaterialRepository.findByName(requirement.getName())
@@ -51,10 +55,12 @@ public class ProductService {
     }
   }
 
+  @Transactional(readOnly = true)
   public List<ProductRequirement> queryConfig() {
     return requirementRepository.findAll();
   }
 
+  @Transactional
   public void updateConfig(ChangeProducConfigRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
@@ -71,6 +77,7 @@ public class ProductService {
     }
   }
 
+  @Transactional
   public void sellProduct(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
@@ -83,6 +90,7 @@ public class ProductService {
     }
   }
 
+  @Transactional
   public void produceProduct(ChangeProductRequest req) {
     Product product = productRepository.findByName(req.getName())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
@@ -114,6 +122,7 @@ public class ProductService {
     productRepository.save(product);
   }
 
+  @Transactional(readOnly = true)
   public List<ProductResponse> getAll() {
     List<Product> products = productRepository.findAll();
 
@@ -132,6 +141,15 @@ public class ProductService {
     }
 
     return res;
+  }
+
+  @Transactional
+  public void delete(String name) {
+    Product product = productRepository.findByName(name)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
+    
+    requirementRepository.deleteRelationship(product.getId());
+    productRepository.delete(product);
   }
 }
 

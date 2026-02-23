@@ -2,7 +2,6 @@ package com.factory_management.services;
 
 import com.factory_management.dto.response.ProductFormatting;
 import com.factory_management.dto.response.ProductionResult;
-import com.factory_management.dto.response.ProductionPlanningResponse;
 import com.factory_management.entities.Product;
 import com.factory_management.entities.ProductRequirement;
 import com.factory_management.entities.RawMaterial;
@@ -10,12 +9,12 @@ import com.factory_management.repository.ProductRepository;
 import com.factory_management.repository.ProductRequirementsRepository;
 import com.factory_management.repository.RawMaterialRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductionPlanningService {
@@ -65,6 +64,7 @@ public class ProductionPlanningService {
     return new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost());
   }
 
+  @Transactional(readOnly = true)
   public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
     List<Integer> maxValueAllowed = new ArrayList<>();
 
@@ -95,6 +95,7 @@ public class ProductionPlanningService {
     return new ProductionResult(constraintValue, cost);
   }
 
+  @Transactional
   public List<RawMaterial> DiscountMaterials(List<RawMaterial> materials, List<ProductRequirement> requirements, Integer quantity, Long productId) {
     for (ProductRequirement requirement : requirements) {
 

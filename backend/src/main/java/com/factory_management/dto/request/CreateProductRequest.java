@@ -17,7 +17,6 @@ public class CreateProductRequest {
   @Positive
   private int price;
 
-  @NotEmpty
   @Valid
   private List<ProductMaterialRequest> materials;
 

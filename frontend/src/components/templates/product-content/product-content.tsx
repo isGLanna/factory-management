@@ -86,7 +86,7 @@ export function ProductContent() {
             price: material.price
           }))}))}
         setProductNameEditing={setProductNameEditing}
-        onDelete={() => handleDeleteProduct}/>}
+        onDelete={handleDeleteProduct}/>}
       </section>
 
       {isCreatingProduct && (

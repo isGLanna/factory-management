@@ -5,6 +5,7 @@ import com.factory_management.dto.request.UpdateRawMaterialRequest;
 import com.factory_management.dto.response.RawMaterialResponse;
 import com.factory_management.entities.RawMaterial;
 import com.factory_management.repository.RawMaterialRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class RawMaterialService {
     repository.save(material);
   }
 
+  @Transactional
   public RawMaterial replacement(UpdateRawMaterialRequest req) {
     RawMaterial material = repository.findByName(req.getName())
       .orElseThrow(() -> new RuntimeException("Raw material not found."));
@@ -43,6 +45,7 @@ public class RawMaterialService {
     return repository.save(material);
   }
 
+  @Transactional(readOnly = true)
   public List<RawMaterialResponse> getAll() {
     List<RawMaterial> materials = repository.findAll();
     List<RawMaterialResponse> res = new ArrayList<>();
@@ -52,5 +55,13 @@ public class RawMaterialService {
     }
 
     return res;
+  }
+
+  @Transactional
+  public void delete(String name) {
+    RawMaterial material = repository.findByName(name)
+                          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Raw material not found."));
+    
+    repository.delete(material);
   }
 }
