@@ -24,7 +24,10 @@ export function FormUpdateProduct({ productName, onUpdate, onClose }: Props) {
   return (
     <form className="item-form-modal flex flex-col gap-4" onSubmit={() => onUpdate(rawMaterials)}>
 
-      <h3>Configuração do produto</h3>
+      <div>
+        <h3>Configuração do produto</h3>
+        <hr />
+      </div>
       <p>Matéria prima de <strong>{productName}</strong>: </p>
 
       <div>

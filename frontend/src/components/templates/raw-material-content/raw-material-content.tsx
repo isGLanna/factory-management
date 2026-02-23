@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react"
-import { getMaterials, createMaterial, requestReplacement } from "./api"
-import type { RawMaterial, MaterialToReplenish } from "../../../types/raw-material"
+import { getMaterials, createMaterial, requestReplacement, deleteMaterial } from "./api"
+import type { RawMaterial, MaterialToProduce } from "../../../types/raw-material"
 import { ListMaterials } from "./sub-template/list-materials"
 import { Modal } from "../../molecules/modal/modal"
 import { FormCreateMaterial } from "./sub-template/create-material"
@@ -33,7 +33,7 @@ export function RawMaterialContent() {
     }
   }, [])
 
-  const handleReplenishMaterial = async (material: MaterialToReplenish) => {
+  const handleReplenishMaterial = async (material: MaterialToProduce) => {
     try {
       await requestReplacement(material)
       fetchMaterials()
@@ -56,6 +56,13 @@ export function RawMaterialContent() {
     }
   }
 
+  const handleDeleteMaterial = async(materialName: string) => {
+    const success = await deleteMaterial(materialName)
+
+    if (success)
+      setMaterials(prev => prev.filter(m => m.name !== materialName))
+  }
+
   return (
     <main className="main-content">
       <header className="flex flex-row justify-between">
@@ -65,13 +72,19 @@ export function RawMaterialContent() {
       <hr className="p-2"/>
 
       <section className="flex flex-wrap gap-4">
-        {isLoading ? <p>Carregando...</p> : <ListMaterials materials={materials} setMaterialNameReplenishing={setMaterialNameReplenishing}/>}
+        {isLoading ? 
+          <p>Carregando...</p> : 
+          <ListMaterials materials={materials} 
+            setMaterialNameReplenishing={setMaterialNameReplenishing} 
+            onDelete={handleDeleteMaterial}/>}
       </section>
 
       {isCreatingMaterial && (
         <Modal 
           onClose={() => setIsCreatingMaterial(false)}>
-          <FormCreateMaterial onCreate={handleCreateMaterial} onClose={() => setIsCreatingMaterial(false)}/>
+          <FormCreateMaterial 
+            onCreate={handleCreateMaterial} 
+            onClose={() => setIsCreatingMaterial(false)}/>
         </Modal>
       )}
 

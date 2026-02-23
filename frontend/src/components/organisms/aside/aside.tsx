@@ -31,7 +31,7 @@ export function Aside() {
         </button>
     
         {/*  Função a ser implementada no futuro */}
-        <InfoTooltip content="Disponível no futuro">
+        <InfoTooltip content="Disponível em breve">
           <button className={pathName === "/sell" ? "active" : ""} onClick={() => navigate({ to: "/production-suggestion"})}>
             <PiMoneyDuotone size={32}/>
             <label>Vender</label>

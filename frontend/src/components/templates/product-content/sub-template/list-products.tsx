@@ -5,15 +5,17 @@ import type { Product } from "../../../../types/product"
 interface Props {
   productsComposition: Array<Product & { materials: { name: string, amount: number, price: number}[]}>
   setProductNameEditing: (setProductNameEditing: string) => void
+  onDelete: (productName: string) => void
 }
 
-export function ListProducts({ productsComposition, setProductNameEditing }: Props) {
-
+export function ListProducts({ productsComposition, setProductNameEditing, onDelete }: Props) {
 
   const productList = useMemo(() => (
     productsComposition.map((product) => (
-      <Card title={product.name} type="product" onEdit={() => setProductNameEditing(product.name)}>
-        <div>  
+      <Card title={product.name} type="product" 
+        onEdit={() => setProductNameEditing(product.name)} 
+        onDelete={() => onDelete(product.name)}>
+        <div>
           <p><strong>Estoque: </strong>{product.amount}</p>
           <p><strong>Preço: </strong>{(product.price/100).toFixed(2)}</p>
         </div>
@@ -24,9 +26,9 @@ export function ListProducts({ productsComposition, setProductNameEditing }: Pro
             <table className="table-auto w-full text-left">
               <thead className="font-medium">
                 <tr className="border-b border-gray-300 ">
-                  <th className="w-3/5">Materiais</th>
-                  <th>Qtd.</th>
-                  <th>$</th>
+                  <th className="w-2/4">Materiais</th>
+                  <th className="w-1/4">Qtd.</th>
+                  <th className="w-1/4">Preço</th>
                 </tr>
               </thead>
           {product.materials.slice(0, 3).map((material) => (

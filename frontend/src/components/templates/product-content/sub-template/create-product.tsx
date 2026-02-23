@@ -27,7 +27,10 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
   return (
     <form className="item-form-modal flex flex-col gap-4" onSubmit={() => onCreate(productComposition)}>
 
-      <h3>Configuração do produto</h3>
+      <div>
+        <h3>Configuração do produto</h3>
+        <hr />
+      </div>
       <p>Informações do produto: </p>
 
       <div className="flex flex-row items-center gap-4">
@@ -39,15 +42,18 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
 
       <div className="flex flex-row items-center gap-4">
         <label htmlFor="stock">Estoque:</label>
-        <input id="stock" name="estoque" type="text" 
+        <input id="stock" name="stock" type="text" 
             value={productComposition.amount} 
             onChange={e => setProductComposition({ ...productComposition, amount: Number(e.target.value) })}
           />
 
         <label htmlFor="price">Preço:</label>
-        <input id="price" name="preço" type="text" 
+        <input id="price" name="price" type="text" inputMode="numeric"
           value={(productComposition.price / 100).toFixed(2)}
-          onChange={e => setProductComposition({ ...productComposition, price: Number(e.target.value) })}
+          onChange={e => {
+            const onlyNumbers = e.target.value.replace(/\D/g, "")
+            const valueInCents = Number(onlyNumbers)
+            setProductComposition({ ...productComposition, price: valueInCents })}}
         />
       </div>
 
@@ -57,7 +63,7 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
           {productComposition.materials.map((m, i) => (
             <div key={i} className="row">
               <input 
-                placeholder="Nome do material" 
+                name={`material(${i})`} placeholder="Nome do material"
                 value={m.name} 
                 onChange={e => updateItem(i, 'name', e.target.value)} 
               />

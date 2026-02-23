@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react"
-import { getProducts, updateProduct, createProduct } from "./api"
+import { getProducts, updateProduct, createProduct, deleteProduct } from "./api"
 import type { Product } from "../../../types/product"
 import type { MaterialToProduce } from "../../../types/raw-material"
 import { ListProducts } from "./sub-template/list-products"
@@ -13,7 +13,7 @@ export function ProductContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [productNameEditing, setProductNameEditing] = useState<string>("")
   const [isCreatingProduct, setIsCreatingProduct] = useState<boolean>(false)
-  const isFirstRender = useRef(true)      // Apenas para tratar problema com strickmode
+  const isFirstRender = useRef(true)      // Tratar com strickmode em desenvolvimento
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true)
@@ -32,7 +32,6 @@ export function ProductContent() {
       fetchProducts()
       isFirstRender.current = false
     }
-    
   }, [])
 
   const handleUpdateProduct = async (rawMaterials: MaterialToProduce[]) => {
@@ -43,7 +42,6 @@ export function ProductContent() {
 
     try {
       await updateProduct(productComposition)
-      fetchProducts()
     } catch (error) {
       alert("Falha ao atualizar o produto.")
     } finally {
@@ -52,7 +50,6 @@ export function ProductContent() {
   }
 
   const handleCreateProduct = async (productComposition: Product & {materials: MaterialToProduce[]}) => {
-    if (!isCreatingProduct) return
 
     productComposition.price = Number((productComposition.price * 100).toFixed(0))
 
@@ -63,6 +60,13 @@ export function ProductContent() {
     } catch (error) {
       alert("Não foi possível criar o produto")
     }
+  }
+
+  const handleDeleteProduct = async(productName: string) => {
+    const success = await deleteProduct(productName)
+
+    if (success)
+      setProductsComposition(prev => prev.filter(p => p.name !== productName))
   }
 
 
@@ -80,12 +84,13 @@ export function ProductContent() {
           materials: product.materials.map(material => ({
             ...material,
             price: material.price
-          }))
-        }))} setProductNameEditing={setProductNameEditing} />}
+          }))}))}
+        setProductNameEditing={setProductNameEditing}
+        onDelete={() => handleDeleteProduct}/>}
       </section>
 
       {isCreatingProduct && (
-        <Modal 
+        <Modal
           onClose={() => setIsCreatingProduct(false)}>
           <FormCreateProduct onCreate={handleCreateProduct} onClose={() => setIsCreatingProduct(false)}/>
         </Modal>

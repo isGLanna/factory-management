@@ -18,20 +18,23 @@ export function FormCreateMaterial({ onCreate, onClose }: Props) {
 
   return (
     <form className="item-form-modal flex flex-col gap-4" onSubmit={() => onCreate(rawMaterial)}>
+      <div>
+        <h3>Configuração do material</h3>
+        <hr />
+      </div>
 
-      <h3>Configuração do produto</h3>
-      <p>Informações do produto: </p>
+      <p>Informações do matéria-prima: </p>
 
       <div className="flex flex-row items-center gap-4">
-        <label htmlFor="name">Produto:</label>
-        <input id="name" name="name" type="text" value={rawMaterial.name} placeholder="Nome do produto"
+        <label htmlFor="name">Material:</label>
+        <input id="name" name="name" type="text" value={rawMaterial.name} placeholder="Nome da matéria-prima"
           onChange={e => updateItem('name', e.target.value)}
         />
       </div>
 
       <div className="flex flex-row items-center gap-4">
         <label htmlFor="amount">Quantia:</label>
-        <input id="amount" name="estoque" type="text" 
+        <input id="amount" name="amount" type="text" 
             value={rawMaterial.amount} 
             onChange={e => updateItem("amount", Number(e.target.value))}
           />

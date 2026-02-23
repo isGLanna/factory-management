@@ -44,3 +44,17 @@ export const produceProduct = async (name: string) => {
     alert("Error producing product")
   }
 }
+
+export const deleteProduct = async (name: string) => {
+  try {
+    const response = await fetch(`${url}/${name}`, {
+      method: "DELETE",
+    })
+
+    if (!response.ok) throw new Error("Erro ao deletar")
+
+    return true
+  } catch (error) {
+    alert("Error deleting product")
+  }
+}

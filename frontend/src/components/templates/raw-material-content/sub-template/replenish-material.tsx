@@ -1,27 +1,30 @@
-import type { RawMaterial, MaterialToReplenish } from "../../../../types/raw-material"
+import type { MaterialToProduce, RawMaterial } from "../../../../types/raw-material"
 import { useState } from "react"
 import "../../../molecules/modal/item-modal.scss"
 
 interface Props {
   rawMaterial: RawMaterial
-  onReplenish: (material: MaterialToReplenish) => void
+  onReplenish: (material: MaterialToProduce) => void
   onClose: () => void
 }
 
 export function FormReplenishMaterial({ rawMaterial, onReplenish, onClose }: Props) {
   const [ replenishMaterial, setReplenishMaterial ] = useState({
     amount: 0,
-    pricePerUnit: "0.00"
+    price: 0
   })
 
-  const updateItem = (field: keyof MaterialToReplenish, value: string | number) => {
+  const updateItem = (field: keyof MaterialToProduce, value: string | number) => {
     setReplenishMaterial({ ...replenishMaterial, [field]: value })
   }
 
   return (
     <form className="item-form-modal flex flex-col gap-4" onSubmit={() => onReplenish({ name: rawMaterial.name, ...replenishMaterial})}>
 
-      <h3>Configuração do material</h3>
+      <div>
+        <h3>Configuração do material</h3>
+        <hr />
+      </div>
       <p>Informações do material: </p>
 
       <div className="flex flex-row items-center gap-4">
@@ -37,10 +40,14 @@ export function FormReplenishMaterial({ rawMaterial, onReplenish, onClose }: Pro
       </div>
 
       <div className="flex flex-row items-center gap-4">
-        <label htmlFor="pricePerUnit">Preço unitário:</label>
-        <input id="pricePerUnit" name="pricePerUnit" type="text" 
-            value={replenishMaterial.pricePerUnit} 
-            onChange={e => updateItem("pricePerUnit", e.target.value)}
+        <label htmlFor="price">Preço unitário:</label>
+        <input id="price" name="price" type="text"
+            inputMode="numeric"
+            value={(replenishMaterial.price/100).toFixed(2)}
+            onChange={e => {
+              const onlyNumbers = e.target.value.replace(/\D/g, "")
+              const valueInCents = Number(onlyNumbers)
+              updateItem("price", valueInCents)}}
           />
       </div>
 

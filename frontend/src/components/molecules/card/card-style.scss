@@ -1,14 +1,19 @@
 .card-container[data-type="material"] {
-  width: clamp(8rem,20%, 12rem);
+  flex: 1 1 25%;
+  min-width: 8rem;
+  max-width: 12rem;
 }
 
 .card-container[data-type="product"] {
-  width: clamp(12rem, 30%, 16rem);
+  flex: 1 1 25%;
+  min-width: 12rem;
+  max-width: 18rem;
 }
 
 .card-container {
   display: flex;
   flex-direction: column;
+  flex: wrap;
   gap: 5px;
   padding: 10px;
   border-radius: 7px;
@@ -23,9 +28,42 @@
       margin: 0; 
       font-size: 1.1rem; 
     }
-    button { 
-      all: unset;
-      cursor: pointer;
+
+    .options {
+      display: flex;
+      position: absolute;
+      flex-direction: column;
+      background: white;
+      border-radius: 7px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      /* - corpo + width de section (pai) + padding de card-container */
+      transform: translateX(calc(-100% + 16px + 10px)) translateY(5px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 150ms opacity;
+
+      &.visible {
+        opacity: 1;
+        transition: 150ms opacity;
+        pointer-events: all;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        gap: 5px;
+        padding: 5px 10px;
+        transition: 100ms;
+        user-select: none;
+      }
+
+      li:hover{
+        background: #f4f4f8;
+        transition: 100ms;
+      }
     }
   }
 

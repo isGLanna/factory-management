@@ -6,12 +6,15 @@ import { Card } from "../../../molecules/card/card"
 interface MaterialProps {
   materials: RawMaterial[]
   setMaterialNameReplenishing: (material: string | null) => void
+  onDelete: (name: string) => void
 }
 
-export function ListMaterials({ materials, setMaterialNameReplenishing }: MaterialProps) {
+export function ListMaterials({ materials, setMaterialNameReplenishing, onDelete }: MaterialProps) {
   const materialsList = useMemo(() => (
     materials.map((material) => (
-      <Card title={material.name} type="material" onEdit={() => setMaterialNameReplenishing(material.name)}>
+      <Card title={material.name} type="material" 
+        onEdit={() => setMaterialNameReplenishing(material.name)}
+        onDelete={() => onDelete(material.name)}>
         <p><strong>Estoque: </strong>{material.amount}</p>
       </ Card>
     ))

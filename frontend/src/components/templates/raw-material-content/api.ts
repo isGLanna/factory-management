@@ -1,4 +1,4 @@
-import type { RawMaterial, MaterialToReplenish } from "../../../types/raw-material"
+import type { RawMaterial } from "../../../types/raw-material"
 
 const url = "http://localhost:8080/raw-material"
 const header = { "Content-Type": "application/json"}
@@ -27,10 +27,11 @@ export const createMaterial = async (materialData: RawMaterial) => {
 }
 
 // Lembrar de adpatar função após definir sistema de preços, frete e recursos da empresa
-export const requestReplacement = async (materialData: MaterialToReplenish) => {
-  const formattedMaterialData: { name: string, amount: number } = {
+export const requestReplacement = async (materialData: {name: string, amount: number, price: number}) => {
+  const formattedMaterialData: { name: string, amount: number, price: number } = {
     name: materialData.name,
-    amount: materialData.amount
+    amount: materialData.amount,
+    price: materialData.price
   }
 
   try {
@@ -55,5 +56,17 @@ export const produceProduct = async (name: string) => {
     )
   } catch (error) {
     alert("Error producing product")
+  }
+}
+
+export const deleteMaterial = async (name: string): Promise<boolean> => {
+  try {
+    await fetch(`${url}/${name}`, {
+      method: "DELETE"
+    })
+    return true
+    } catch (error) {
+      alert("Error deleting raw material")
+      return false
   }
 }
