@@ -52,3 +52,10 @@ yarn:
 ```sh
   ./gradlew bootRun
 ```
+
+### Execução de Teste E2E ###
+
+```sh
+  cd frontend
+  npx cypress open
+```
