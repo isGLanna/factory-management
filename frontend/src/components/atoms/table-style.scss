@@ -9,7 +9,7 @@
     background-color: #fafafa;
     border-radius: 5px;
     
-    thead {
+    thead, tfoot {
       tr{
         display: grid;
         grid-template-columns: 4fr 1fr 3fr 3fr;

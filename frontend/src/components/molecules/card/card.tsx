@@ -27,7 +27,7 @@ export function Card({ title, type, children, onEdit, onDelete}: CardProps) {
         <section>
             <PiDotsThreeOutlineVerticalFill className="cursor-pointer" name="three points" onClick={() => setIsOpen(prev => !prev)} />
             <ul className={`options ${isOpen ? "visible" : "active"}`}>
-              <li onClick={() => onEdit}>
+              <li onClick={onEdit}>
                 Editar <HiOutlinePencilSquare/> 
               </li>
               <li style={{color: "var(--red-600)"}} onClick={() => setIsWarningModalOpen(true)}>

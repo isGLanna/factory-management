@@ -44,7 +44,7 @@ export const ProductionAdvisor = react.memo(({setToProduce}: productionAdvisorPr
         <button className="btn action" onClick={handleSuggestion}>Sugestão</button>
         <SearchBar action={(description) => handleSearch(description)} />
       </header>
-      <table>
+      <table data-testid="production-suggestion-table">
         <thead>
           <tr>
             <th>Produto</th>

@@ -61,7 +61,7 @@ export const produceProduct = async (name: string) => {
 
 export const deleteMaterial = async (name: string): Promise<boolean> => {
   try {
-    await fetch(`${url}/${name}`, {
+    await fetch(`${url}/${encodeURIComponent(name)}`, {
       method: "DELETE"
     })
     return true

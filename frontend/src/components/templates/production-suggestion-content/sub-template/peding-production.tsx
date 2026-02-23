@@ -21,7 +21,7 @@ export const PendingProduction = React.memo(({toProduce}: PendingProductionProps
         </button>
       </header>
       
-      <table>
+      <table data-testid="pending-production-table">
         <thead>
           <tr>
             <th>Produto</th>
@@ -45,16 +45,14 @@ export const PendingProduction = React.memo(({toProduce}: PendingProductionProps
           )}
         </tbody>
       
-        <hr className="border-gray-200"/>
-
-        <thead>
+        <tfoot>
           <tr>
             <th>Soma total</th>
             <th>{toProduce.reduce((sum, product) => sum + product.amount, 0)}</th>
             <th>{toProduce.reduce((sum, product) => sum + (product.income/100), 0).toFixed(2)}</th>
             <th>{toProduce.reduce((sum, product) => sum + (product.cost/100), 0).toFixed(2)}</th>
           </tr>
-        </thead>
+        </tfoot>
       </table>
     </div>
   )

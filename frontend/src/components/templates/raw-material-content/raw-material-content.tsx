@@ -67,7 +67,7 @@ export function RawMaterialContent() {
     <main className="main-content">
       <header className="flex flex-row justify-between">
         <h1>Matéria Prima</h1>
-        <button className="btn-add" onClick={() => setIsCreatingMaterial(true)}>Incluir matéria-prima</button>
+        <button className="btn-add" name="" onClick={() => setIsCreatingMaterial(true)}>Incluir matéria-prima</button>
       </header>
       <hr className="p-2"/>
 

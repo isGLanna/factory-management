@@ -39,4 +39,10 @@ public class RawMaterialsController {
   public ResponseEntity<List<RawMaterialResponse>>  getAll() {
     return ResponseEntity.ok(service.getAll());
   }
+
+  @DeleteMapping("/{name}")
+  public ResponseEntity<Void> delete(@PathVariable String name) {
+    service.delete(name);
+    return ResponseEntity.noContent().build();
+  }
 }

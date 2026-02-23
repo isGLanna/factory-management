@@ -16,11 +16,11 @@ export function SearchBar({ action }: SearchBarProps) {
   }
   return (
     <form className="bg-white px-2 flex flex-row gap-2 rounded-[5px]" onSubmit={(e) => hadleSubmit(e)}>
-      <input type="text" name="" id="" 
-        placeholder="Limite de produção para..." 
-        value={description} 
+      <input type="text" name="search-input"
+        placeholder="Limite de produção para..."
+        value={description}
         onChange={(e) => setDescription(e.target.value)}/>
-      <button className="btn" data-type="submit">
+      <button className="btn" name="submit" type="submit">
         <IoIosSearch />
       </button>
     </form>
