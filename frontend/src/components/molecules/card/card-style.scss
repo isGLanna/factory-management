@@ -24,9 +24,16 @@
     justify-content: space-between;
     align-items: center;
 
-    h3 { 
-      margin: 0; 
-      font-size: 1.1rem; 
+    section {
+      position: relative;
+      height: 16px;
+      width: 16px;
+      overflow: visible;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
     }
 
     .options {

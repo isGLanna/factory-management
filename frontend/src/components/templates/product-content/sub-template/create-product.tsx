@@ -14,7 +14,7 @@ export function FormCreateProduct({ onCreate, onClose }: Props) {
     name: "",
     amount: 0,
     price: 0,
-    materials: [{ name: "", amount: 0, price: 0 }]
+    materials: []
   }) 
 
   const updateItem = (index: number, field: keyof MaterialToProduce, value: string | number) => {

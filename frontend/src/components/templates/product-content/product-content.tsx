@@ -51,7 +51,7 @@ export function ProductContent() {
 
   const handleCreateProduct = async (productComposition: Product & {materials: MaterialToProduce[]}) => {
 
-    productComposition.price = Number((productComposition.price * 100).toFixed(0))
+    productComposition.price = productComposition.price
 
     try {
       await createProduct(productComposition)

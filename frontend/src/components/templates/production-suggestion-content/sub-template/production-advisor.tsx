@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import * as react from 'react'
+import { useState } from 'react'
 import type { ProductSuggestion } from "../../../../types/product-suggestions"
 import { fetchProductionSuggestions, maxProductionAmount } from "./api"
 import { SearchBar } from "../../../molecules/seach-bar/seach-bar"
@@ -11,7 +12,7 @@ interface productionAdvisorProps {
 
 // Aplicar useMemo na função para recarregar somente quando algo mudar
 
-export const ProductionAdvisor = React.memo(({setToProduce}: productionAdvisorProps) => {
+export const ProductionAdvisor = react.memo(({setToProduce}: productionAdvisorProps) => {
   const [products, setProducts] = useState<ProductSuggestion[]>([])
   
   const handleSearch = async (description: string) => {
