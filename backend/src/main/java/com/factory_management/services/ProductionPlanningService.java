@@ -22,26 +22,29 @@ public class ProductionPlanningService {
   private final ProductRequirementsRepository requirementRepository;
   private final RawMaterialRepository rawMaterialRepository;
 
-  public ProductionPlanningService(ProductRepository productRepository, ProductRequirementsRepository requirementRepository, RawMaterialRepository rawMaterialRepository) {
+  public ProductionPlanningService(ProductRepository productRepository,
+      ProductRequirementsRepository requirementRepository, RawMaterialRepository rawMaterialRepository) {
     this.productRepository = productRepository;
     this.requirementRepository = requirementRepository;
     this.rawMaterialRepository = rawMaterialRepository;
   }
 
+  @Transactional
   public List<ProductFormatting> OptmizeProcess() {
     List<Product> products = productRepository.findAll();
     List<RawMaterial> materials = rawMaterialRepository.findAll();
     List<ProductRequirement> requirements = requirementRepository.findAll();
 
-    List<ProductFormatting>  productionPlanning = new ArrayList<>();
+    List<ProductFormatting> productionPlanning = new ArrayList<>();
     products.sort(Comparator.comparing(Product::getPrice).reversed());
 
-    for(Product product : products) {
+    for (Product product : products) {
       ProductionResult result = MaxProduce(product.getId(), requirements, materials);
       materials = DiscountMaterials(materials, requirements, result.getQuantityMaterial(), product.getId());
       int profit = product.getPrice() * result.getQuantityMaterial();
 
-      productionPlanning.add(new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost()));
+      productionPlanning
+          .add(new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost()));
     }
 
     return productionPlanning;
@@ -49,7 +52,7 @@ public class ProductionPlanningService {
 
   public ProductFormatting CalculateMaxProduction(String name) {
     Product product = productRepository.findByName(name)
-            .orElseThrow(() -> new RuntimeException("Product not found."));
+        .orElseThrow(() -> new RuntimeException("Product not found."));
 
     List<ProductRequirement> requirements = requirementRepository.findByProductId(product.getId());
     List<RawMaterial> materials = new ArrayList<>();
@@ -65,7 +68,8 @@ public class ProductionPlanningService {
   }
 
   @Transactional(readOnly = true)
-  public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
+  public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements,
+      List<RawMaterial> materials) {
     List<Integer> maxValueAllowed = new ArrayList<>();
 
     for (ProductRequirement requirement : requirements) {
@@ -75,9 +79,9 @@ public class ProductionPlanningService {
       }
 
       RawMaterial material = materials.stream()
-              .filter(m -> m.getId().equals((requirement.getRawMaterial().getId())))
-              .findFirst()
-              .orElseThrow(() -> new IllegalArgumentException("Material not found"));
+          .filter(m -> m.getId().equals((requirement.getRawMaterial().getId())))
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Material not found"));
 
       int quantity = material.getAmount() / requirement.getAmount();
 
@@ -96,7 +100,8 @@ public class ProductionPlanningService {
   }
 
   @Transactional
-  public List<RawMaterial> DiscountMaterials(List<RawMaterial> materials, List<ProductRequirement> requirements, Integer quantity, Long productId) {
+  public List<RawMaterial> DiscountMaterials(List<RawMaterial> materials, List<ProductRequirement> requirements,
+      Integer quantity, Long productId) {
     for (ProductRequirement requirement : requirements) {
 
       if (!requirement.getProduct().getId().equals(productId)) {
@@ -104,12 +109,13 @@ public class ProductionPlanningService {
       }
 
       RawMaterial material = materials.stream()
-              .filter(m -> m.getId().equals((requirement.getRawMaterial().getId())))
-              .findFirst()
-              .orElseThrow(() -> new IllegalArgumentException("Material not found"));
+          .filter(m -> m.getId().equals((requirement.getRawMaterial().getId())))
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Material not found"));
 
       material.setAmount(material.getAmount() - requirement.getAmount() * quantity);
     }
+    rawMaterialRepository.saveAll(materials);
 
     return materials;
   }

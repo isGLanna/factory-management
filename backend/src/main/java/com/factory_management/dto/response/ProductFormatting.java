@@ -9,7 +9,7 @@ public class ProductFormatting {
   public ProductFormatting(String name, int amount, int price, int cost) {
     this.name = name;
     this.amount = amount;
-    this.profit = price * amount;
+    this.profit = profit;
     this.cost = cost;
   }
 
