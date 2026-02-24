@@ -10,7 +10,7 @@ public class AutoPing {
 
   @Scheduled(fixedRate = 1000 * 60 * 10)
   public void keepAlive() {
-    String url = "http://localhost:8080/ping";
+    String url = "https://factory-management-10u6.onrender.com/ping";
     try {
       String response = restTemplate.getForObject(url, String.class);
       System.out.println(response);
