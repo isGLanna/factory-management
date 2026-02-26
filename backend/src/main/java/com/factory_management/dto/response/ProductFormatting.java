@@ -6,7 +6,7 @@ public class ProductFormatting {
   private int profit;
   private int cost;
 
-  public ProductFormatting(String name, int amount, int price, int cost) {
+  public ProductFormatting(String name, int amount, int profit, int cost) {
     this.name = name;
     this.amount = amount;
     this.profit = profit;
@@ -15,6 +15,6 @@ public class ProductFormatting {
 
   public String getName() { return name; }
   public int getAmount() { return amount; }
-  public int getIncome() { return profit; }
+  public int getProfit() { return profit; }
   public int getCost() { return cost; }
 }

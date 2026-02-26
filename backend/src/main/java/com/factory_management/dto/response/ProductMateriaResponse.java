@@ -12,9 +12,7 @@ public class ProductMateriaResponse {
   @Positive
   private int amount;
 
-  public String getName() {
-    return name;
-  }
+  public String getName() { return name; }
 
   public int getAmount() {  return amount;  }
 

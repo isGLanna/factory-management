@@ -134,7 +134,8 @@ public class ProductService {
       
       for(ProductRequirement requirement : requiriments) {
         RawMaterial material = requirement.getRawMaterial();
-        materialsToProduce.add(new MaterialToProduce(material.getName(), requirement.getAmount(), 0));
+        int cost = requirement.getAmount() * material.getPrice();
+        materialsToProduce.add(new MaterialToProduce(material.getName(), requirement.getAmount(), cost));
       }
 
       res.add(new ProductResponse(product.getName(), product.getAmount(), product.getPrice(), materialsToProduce));

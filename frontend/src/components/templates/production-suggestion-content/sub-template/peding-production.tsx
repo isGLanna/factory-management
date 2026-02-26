@@ -37,7 +37,7 @@ export const PendingProduction = React.memo(({toProduce}: PendingProductionProps
               <tr key={product.name}>
                 <th>{product.name}</th>
                 <th>{product.amount}</th>
-                <th>{(product.income/100).toFixed(2)}</th>
+                <th>{(product.profit/100).toFixed(2)}</th>
                 <th>{(product.cost/100).toFixed(2)}</th>
               </tr>
           ))) : (
@@ -49,7 +49,7 @@ export const PendingProduction = React.memo(({toProduce}: PendingProductionProps
           <tr>
             <th>Soma total</th>
             <th>{toProduce.reduce((sum, product) => sum + product.amount, 0)}</th>
-            <th>{toProduce.reduce((sum, product) => sum + (product.income/100), 0).toFixed(2)}</th>
+            <th>{toProduce.reduce((sum, product) => sum + (product.profit/100), 0).toFixed(2)}</th>
             <th>{toProduce.reduce((sum, product) => sum + (product.cost/100), 0).toFixed(2)}</th>
           </tr>
         </tfoot>

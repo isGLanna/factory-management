@@ -1,6 +1,6 @@
 export interface ProductSuggestion {
   name: string
   amount: number
-  income: number
+  profit: number
   cost: number
 }

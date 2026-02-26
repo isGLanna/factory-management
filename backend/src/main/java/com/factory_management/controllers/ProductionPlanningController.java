@@ -19,7 +19,7 @@ public class ProductionPlanningController {
 
   @GetMapping("/production-suggestion")
   public ResponseEntity<List<ProductFormatting>> productionPlanning() {
-    return ResponseEntity.ok(service.OptmizeProcess());
+    return ResponseEntity.ok(service.optimeProcess());
   }
 
   @GetMapping("/max-production")

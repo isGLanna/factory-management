@@ -59,7 +59,7 @@ export const ProductionAdvisor = react.memo(({setToProduce}: productionAdvisorPr
             <tr key={product.name}>
               <th>{product.name}</th>
               <th>{product.amount}</th>
-              <th>{(product.income/100).toFixed(2)}</th>
+              <th>{(product.profit/100).toFixed(2)}</th>
               <th>{(product.cost/100).toFixed(2)}</th>
               <th className="translate-x-[-15px] p-[0px]">
                 <IoIosArrowDroprightCircle size={20} onClick={() => setToProduce(product)}/>

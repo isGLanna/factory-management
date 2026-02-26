@@ -1,5 +1,13 @@
 package com.factory_management.services;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.factory_management.dto.response.ProductFormatting;
 import com.factory_management.dto.response.ProductionResult;
 import com.factory_management.entities.Product;
@@ -8,13 +16,6 @@ import com.factory_management.entities.RawMaterial;
 import com.factory_management.repository.ProductRepository;
 import com.factory_management.repository.ProductRequirementsRepository;
 import com.factory_management.repository.RawMaterialRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 public class ProductionPlanningService {
@@ -22,15 +23,13 @@ public class ProductionPlanningService {
   private final ProductRequirementsRepository requirementRepository;
   private final RawMaterialRepository rawMaterialRepository;
 
-  public ProductionPlanningService(ProductRepository productRepository,
-      ProductRequirementsRepository requirementRepository, RawMaterialRepository rawMaterialRepository) {
+  public ProductionPlanningService(ProductRepository productRepository, ProductRequirementsRepository requirementRepository, RawMaterialRepository rawMaterialRepository) {
     this.productRepository = productRepository;
     this.requirementRepository = requirementRepository;
     this.rawMaterialRepository = rawMaterialRepository;
   }
 
-  @Transactional
-  public List<ProductFormatting> OptmizeProcess() {
+  public List<ProductFormatting> optimeProcess() {
     List<Product> products = productRepository.findAll();
     List<RawMaterial> materials = rawMaterialRepository.findAll();
     List<ProductRequirement> requirements = requirementRepository.findAll();
@@ -40,11 +39,15 @@ public class ProductionPlanningService {
 
     for (Product product : products) {
       ProductionResult result = MaxProduce(product.getId(), requirements, materials);
-      materials = DiscountMaterials(materials, requirements, result.getQuantityMaterial(), product.getId());
+      
+      if (result.getQuantityMaterial() == 0) {
+        continue;
+      }
+
+      materials = DiscountMaterialSimulator(materials, requirements, result.getQuantityMaterial(), product.getId());
       int profit = product.getPrice() * result.getQuantityMaterial();
 
-      productionPlanning
-          .add(new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost()));
+      productionPlanning.add(new ProductFormatting(product.getName(), result.getQuantityMaterial(), profit, result.getCost()));
     }
 
     return productionPlanning;
@@ -68,8 +71,7 @@ public class ProductionPlanningService {
   }
 
   @Transactional(readOnly = true)
-  public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements,
-      List<RawMaterial> materials) {
+  public ProductionResult MaxProduce(Long productId, List<ProductRequirement> requirements, List<RawMaterial> materials) {
     List<Integer> maxValueAllowed = new ArrayList<>();
 
     for (ProductRequirement requirement : requirements) {
@@ -83,25 +85,31 @@ public class ProductionPlanningService {
           .findFirst()
           .orElseThrow(() -> new IllegalArgumentException("Material not found"));
 
+
+      System.out.println("Quantidade:" + material.getAmount() + "\nRequeriment: " + requirement.getAmount());
+
       int quantity = material.getAmount() / requirement.getAmount();
+      System.out.println("Quantidade:" + quantity);
 
       maxValueAllowed.add(quantity);
     }
 
     int cost = 0;
     int constraintValue = Collections.min(maxValueAllowed);
+    System.out.println(constraintValue);
 
     // Cálculo do custo de produção
     for (ProductRequirement requirement : requirements) {
       cost += constraintValue * requirement.getAmount() * requirement.getRawMaterial().getPrice();
     }
+    
+    System.out.println(cost);
 
     return new ProductionResult(constraintValue, cost);
   }
 
   @Transactional
-  public List<RawMaterial> DiscountMaterials(List<RawMaterial> materials, List<ProductRequirement> requirements,
-      Integer quantity, Long productId) {
+  public List<RawMaterial> DiscountMaterialSimulator(List<RawMaterial> materials, List<ProductRequirement> requirements, int quantity, Long productId) {
     for (ProductRequirement requirement : requirements) {
 
       if (!requirement.getProduct().getId().equals(productId)) {
@@ -115,7 +123,6 @@ public class ProductionPlanningService {
 
       material.setAmount(material.getAmount() - requirement.getAmount() * quantity);
     }
-    rawMaterialRepository.saveAll(materials);
 
     return materials;
   }
